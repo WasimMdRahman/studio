@@ -18,7 +18,7 @@ export default function ParkingStats({ slots }: ParkingStatsProps) {
       <CardContent className="space-y-4">
         <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Available Slots</span>
-            <span className="font-bold text-accent-foreground text-lg">{available}</span>
+            <span className="font-bold text-success-foreground text-lg">{available}</span>
         </div>
         <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Booked Slots</span>

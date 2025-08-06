@@ -17,20 +17,23 @@ const statusConfig = {
   available: {
     label: "Available",
     icon: Check,
-    cardClass: "border-accent-foreground/50 bg-accent/20 hover:bg-accent/30",
-    iconClass: "text-accent-foreground",
+    cardClass: "border-success/50 bg-success/20 hover:bg-success/30",
+    iconClass: "text-success-foreground",
+    footerClass: "text-success-foreground"
   },
   booked: {
     label: "Booked",
     icon: Car,
     cardClass: "border-destructive/50 bg-destructive/10",
     iconClass: "text-destructive",
+    footerClass: 'text-destructive'
   },
   expired: {
     label: "Expired",
     icon: Clock,
     cardClass: "border-muted-foreground/30 bg-muted/50",
     iconClass: "text-muted-foreground",
+    footerClass: "text-muted-foreground",
   }
 };
 
@@ -68,12 +71,17 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
     "text-center transition-colors",
     config.cardClass,
     isClickable ? "cursor-pointer" : "cursor-not-allowed opacity-80",
-    isBookedByCurrentUser && "border-primary bg-primary/10 hover:bg-primary/20"
+    isBookedByCurrentUser && "border-accent bg-accent/10 hover:bg-accent/20"
   );
   const iconClasses = cn(
     "mx-auto h-8 w-8",
     config.iconClass,
-    isBookedByCurrentUser && "text-primary-foreground"
+    isBookedByCurrentUser && "text-accent-foreground"
+  );
+  
+  const footerClasses = cn(
+    "p-2 pt-0 text-xs flex justify-center h-4",
+    isBookedByCurrentUser ? "text-accent-foreground" : config.footerClass
   );
 
   return (
@@ -91,9 +99,9 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
             <CardContent className="p-2 pb-0">
               <p className="font-bold text-lg">{slot.id}</p>
             </CardContent>
-            <CardFooter className="p-2 pt-0 text-xs text-muted-foreground flex justify-center h-4">
+            <CardFooter className={footerClasses}>
               {isBookedByCurrentUser ? (
-                <span className="font-medium text-primary-foreground">{countdown} left</span>
+                <span className="font-medium">{countdown} left</span>
               ) : slot.status === 'booked' ? (
                 'Booked'
               ) : (
