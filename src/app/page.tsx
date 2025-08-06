@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useAuth } from "@/components/auth-provider";
@@ -46,15 +47,11 @@ export default function Home() {
           <div className="absolute top-1/2 left-0 w-full h-px bg-border -z-10"></div>
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-[200vw]">
              <div className="animate-car-drive flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                  className="w-24 h-24 text-gray-500"
-                  fill="currentColor"
-                >
-                  <path d="M189.3 128.4L156.8 69.4c-4.8-8.5-13.6-13.4-23-13.4H64c-11.2 0-21.2 5.9-26.6 15.2L2.6 128.4C1 131.2 0 134.3 0 137.5V368c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V336h256v32c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V192c0-44.2-35.8-80-80-80h-94.7zM128 248c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm192 0c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24z"/>
-                  <path d="M497.1 236.4L444.6 177.4c-4.8-8.5-13.6-13.4-23-13.4H352c-15.5 0-29.4 8.2-36.9 21.1L288 224h64c17.7 0 32 14.3 32 32v64h32c5.9 0 11.4-1.6 16-4.5l64-39.1c9.2-5.6 14.9-15.7 14.9-26.6v-2.9c.1-8.6-4.9-16.5-12.8-20.5z"/>
-                </svg>
+                <div className="w-16 h-16 text-gray-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 11h14l-1.5-4.5h-11L5 11zm-2 2v5h2v-1h14v1h2v-5H3zm3.5 3a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm11 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                  </svg>
+                </div>
              </div>
            </div>
           <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-6xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
