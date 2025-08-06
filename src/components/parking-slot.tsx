@@ -17,20 +17,20 @@ const statusConfig = {
   available: {
     label: "Available",
     icon: Check,
-    cardClass: "border-green-500 bg-green-500/10 hover:bg-green-500/20",
-    iconClass: "text-green-500",
+    cardClass: "border-accent-foreground/50 bg-accent/20 hover:bg-accent/30",
+    iconClass: "text-accent-foreground",
   },
   booked: {
     label: "Booked",
     icon: Car,
-    cardClass: "border-red-500 bg-red-500/10",
-    iconClass: "text-red-500",
+    cardClass: "border-destructive/50 bg-destructive/10",
+    iconClass: "text-destructive",
   },
   expired: {
     label: "Expired",
     icon: Clock,
-    cardClass: "border-gray-400 bg-gray-400/10",
-    iconClass: "text-gray-400",
+    cardClass: "border-muted-foreground/30 bg-muted/50",
+    iconClass: "text-muted-foreground",
   }
 };
 
@@ -73,7 +73,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
   const iconClasses = cn(
     "mx-auto h-8 w-8",
     config.iconClass,
-    isBookedByCurrentUser && "text-primary"
+    isBookedByCurrentUser && "text-primary-foreground"
   );
 
   return (
@@ -93,7 +93,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
             </CardContent>
             <CardFooter className="p-2 pt-0 text-xs text-muted-foreground flex justify-center h-4">
               {isBookedByCurrentUser ? (
-                <span className="font-medium text-primary">{countdown} left</span>
+                <span className="font-medium text-primary-foreground">{countdown} left</span>
               ) : slot.status === 'booked' ? (
                 'Booked'
               ) : (

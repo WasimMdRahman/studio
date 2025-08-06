@@ -18,4 +18,4 @@
 - Body and headline font: 'PT Sans' (sans-serif) for a modern and readable interface.
 - Use clear icons for slot status: car icon for booked, checkmark for available, clock icon for expired.
 - Card-based grid layout for slots, responsive for mobile and desktop.
-- Subtle animations for booking confirmations and status updates.
+- Subtle animations for booking confirmations and status updates, including eye-catching car parking animations.
