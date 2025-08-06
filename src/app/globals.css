@@ -4,30 +4,29 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Light Grayish Blue */
-    --foreground: 222 84% 5%;
-    --card: 210 40% 98%;
-    --card-foreground: 222 84% 5%;
-    --popover: 210 40% 98%;
-    --popover-foreground: 222 84% 5%;
-    --primary: 221 83% 53%; /* Navy Blue */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 91%;
-    --secondary-foreground: 222 84% 5%;
-    --muted: 210 40% 91%;
-    --muted-foreground: 215 25% 45%;
-    --accent: 260 70% 60%; /* Violet */
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
+    --card: 222 84% 5%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 84% 5%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 84% 5%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 260 70% 60%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
-    --radius: 0.5rem;
-    --success: 140 70% 60%; /* Light Green */
-    --success-foreground: 222 84% 5%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 210 40% 98%;
+    --success: 140 70% 30%;
+    --success-foreground: 210 40% 98%;
   }
- 
+
   .dark {
     --background: 222 84% 5%;
     --foreground: 210 40% 98%;
@@ -52,7 +51,7 @@
     --success-foreground: 210 40% 98%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -64,15 +63,18 @@
 
 @layer utilities {
   .animate-car-drive {
-    animation: car-drive 10s linear infinite;
+    animation: car-drive 8s ease-in-out infinite;
   }
 
   @keyframes car-drive {
     0% {
-      transform: translateX(-150%);
+      transform: translateX(-100vw);
+    }
+    40%, 60% {
+      transform: translateX(0);
     }
     100% {
-      transform: translateX(150vw);
+      transform: translateX(100vw);
     }
   }
 

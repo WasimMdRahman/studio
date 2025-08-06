@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
-import { Loader2, ParkingSquare } from "lucide-react";
+import { Car, Loader2, ParkingSquare } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -44,8 +44,12 @@ export default function Home() {
       <main className="flex-1">
         <section className="container relative mx-auto flex flex-col items-center justify-center px-4 py-16 text-center md:py-24">
           <div className="absolute top-1/2 left-0 w-full h-px bg-border -z-10"></div>
-           <div className="absolute -bottom-10 left-0 animate-car-drive z-0">
-            <ParkingSquare className="w-24 h-24 text-primary/30" />
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-[200vw]">
+             <div className="animate-car-drive flex items-center">
+                <Car className="w-24 h-24 text-primary/30" />
+                <div className="w-[calc(50vw)]"></div>
+                <ParkingSquare className="w-24 h-24 text-primary/50 opacity-50" />
+             </div>
            </div>
           <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-6xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
             The smartest way to park.
