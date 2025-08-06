@@ -63,18 +63,30 @@
 
 @layer utilities {
   .animate-car-drive {
-    animation: car-drive 8s ease-in-out infinite;
+    animation: car-drive 12s ease-in-out infinite;
   }
 
   @keyframes car-drive {
     0% {
-      transform: translateX(-100vw);
+      transform: translateX(-150vw);
     }
-    40%, 60% {
-      transform: translateX(0);
+    30% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(0) scale(1);
+    }
+    45% {
+        transform: translateX(0) scale(1.1);
+    }
+    50% {
+        transform: translateX(0) scale(1);
+    }
+    60% {
+        transform: translateX(0);
     }
     100% {
-      transform: translateX(100vw);
+      transform: translateX(150vw);
     }
   }
 
