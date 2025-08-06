@@ -2,20 +2,47 @@
 
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
-import { Car, Loader2, ParkingSquare } from "lucide-react";
+import { Car, Loader2, Map, ParkingSquare, Wallet, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Home() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const featuresRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user && !loading) {
       router.push("/dashboard");
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    const featuresNode = featuresRef.current;
+    if (!featuresNode) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-in-up");
+          } else {
+            entry.target.classList.remove("animate-fade-in-up");
+            entry.target.style.opacity = '0'; // Keep it faded out when not in view
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const featureElements = featuresNode.querySelectorAll(".feature-card");
+    featureElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      featureElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   if (loading || (user && !loading)) {
     return (
@@ -46,9 +73,22 @@ export default function Home() {
           <div className="absolute top-1/2 left-0 w-full h-px bg-border -z-10"></div>
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-[200vw]">
              <div className="animate-car-drive flex items-center">
-                <Car className="w-24 h-24 text-primary/30" />
-                <div className="w-[calc(50vw)]"></div>
-                <ParkingSquare className="w-24 h-24 text-primary/50 opacity-50" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-28 h-28 text-gray-400"
+                >
+                  <path d="M14 16H9m10 0h1.5a1.5 1.5 0 0 0 1.5-1.5V10a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v4.5A1.5 1.5 0 0 0 3.5 16H5" />
+                  <path d="M5.5 16V8.5a1.5 1.5 0 0 1 1.5-1.5h7a1.5 1.5 0 0 1 1.5 1.5V16" />
+                  <circle cx="7.5" cy="16.5" r="1.5" />
+                  <circle cx="16.5" cy="16.5" r="1.5" />
+                  <path d="M2 10h20" />
+                </svg>
              </div>
            </div>
           <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-6xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
@@ -63,28 +103,49 @@ export default function Home() {
             </Button>
           </div>
         </section>
-        <section className="bg-secondary/50">
+        <section ref={featuresRef} className="bg-secondary/50">
           <div className="container mx-auto grid gap-12 px-4 py-20 md:grid-cols-3">
-            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+            <div className="feature-card flex flex-col items-center text-center opacity-0">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                <Zap className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold">Real-Time Availability</h3>
-              <p className="mt-2 text-muted-foreground">See which slots are open, booked, or recently expired, all updated live.</p>
+              <p className="mt-2 text-muted-foreground">Our network of sensors provides up-to-the-second information on which slots are open, so you can head directly to a vacant spot.</p>
             </div>
-            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '1.0s'}}>
+            <div className="feature-card flex flex-col items-center text-center opacity-0" style={{animationDelay: '0.2s'}}>
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-              </div>
-              <h3 className="text-xl font-semibold">One-Click Booking</h3>
-              <p className="mt-2 text-muted-foreground">Reserve your spot with a single click and get a 15-minute reservation timer.</p>
-            </div>
-            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '1.2s'}}>
-               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M12 14h0"/></svg>
               </div>
+              <h3 className="text-xl font-semibold">One-Click Booking</h3>
+              <p className="mt-2 text-muted-foreground">Found your spot? Reserve it instantly with a single click. We'll hold it for you for 15 minutes, giving you plenty of time to arrive.</p>
+            </div>
+            <div className="feature-card flex flex-col items-center text-center opacity-0" style={{animationDelay: '0.4s'}}>
+               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+              </div>
               <h3 className="text-xl font-semibold">AI-Powered Tips</h3>
-              <p className="mt-2 text-muted-foreground">Get smart parking recommendations based on real-time data and your habits.</p>
+              <p className="mt-2 text-muted-foreground">Our smart assistant analyzes your parking habits and real-time data to suggest the best available spots for you.</p>
+            </div>
+             <div className="feature-card flex flex-col items-center text-center opacity-0" style={{animationDelay: '0.6s'}}>
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Map className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold">Live Map Tracking</h3>
+              <p className="mt-2 text-muted-foreground">Navigate the parking lot with ease using our live map, which shows your location and highlights available spots nearby.</p>
+            </div>
+             <div className="feature-card flex flex-col items-center text-center opacity-0" style={{animationDelay: '0.8s'}}>
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Wallet className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold">Seamless Payments</h3>
+              <p className="mt-2 text-muted-foreground">Connect your payment method for hassle-free entry and exit. No need to fumble with cash or cards at the gate.</p>
+            </div>
+             <div className="feature-card flex flex-col items-center text-center opacity-0" style={{animationDelay: '1.0s'}}>
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+              <h3 className="text-xl font-semibold">Booking History</h3>
+              <p className="mt-2 text-muted-foreground">Keep track of your previous parking sessions, view receipts, and analyze your parking expenses all in one place.</p>
             </div>
           </div>
         </section>

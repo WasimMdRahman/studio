@@ -28,24 +28,24 @@
   }
 
   .dark {
-    --background: 222 84% 5%;
+    --background: 222 84% 4.9%;
     --foreground: 210 40% 98%;
-    --card: 222 84% 5%;
+    --card: 222 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222 84% 5%;
+    --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
-    --primary-foreground: 222 84% 5%;
-    --secondary: 217 33% 17%;
+    --primary-foreground: 222 84% 4.9%;
+    --secondary: 217 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 260 70% 60%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
     --ring: 210 40% 98%;
     --success: 140 70% 30%;
     --success-foreground: 210 40% 98%;
@@ -80,11 +80,13 @@
 
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
-    opacity: 0;
-    transform: translateY(20px);
   }
 
   @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
     to {
       opacity: 1;
       transform: translateY(0);
