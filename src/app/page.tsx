@@ -46,8 +46,8 @@ export default function Home() {
         <section className="container relative mx-auto flex flex-col items-center justify-center px-4 py-16 text-center md:py-24">
           <div className="absolute top-1/2 left-0 w-full h-px bg-border -z-10"></div>
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-[200vw]">
-             <div className="animate-car-drive flex items-center">
-                <div className="w-16 h-16 text-gray-500">
+             <div className="animate-slidecar flex items-center">
+                <div className="w-32 h-32 text-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M5 11h14l-1.5-4.5h-11L5 11zm-2 2v5h2v-1h14v1h2v-5H3zm3.5 3a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm11 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
                   </svg>
