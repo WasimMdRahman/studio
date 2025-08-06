@@ -27,9 +27,7 @@ export default function Home() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("animate-fade-in-up");
-          } else {
-            entry.target.classList.remove("animate-fade-in-up");
-            entry.target.style.opacity = '0'; // Keep it faded out when not in view
+            entry.target.classList.remove("opacity-0");
           }
         });
       },
