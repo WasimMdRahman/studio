@@ -48,11 +48,12 @@ export default function Home() {
              <div className="animate-car-drive flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="w-40 h-40 text-gray-500"
+                  viewBox="0 0 512 512"
+                  className="w-28 h-28 text-gray-500"
                   fill="currentColor"
                 >
-                  <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                  <path d="M189.3 128.4L156.8 69.4c-4.8-8.5-13.6-13.4-23-13.4H64c-11.2 0-21.2 5.9-26.6 15.2L2.6 128.4C1 131.2 0 134.3 0 137.5V368c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V336h256v32c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V192c0-44.2-35.8-80-80-80h-94.7zM128 248c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm192 0c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24z"/>
+                  <path d="M497.1 236.4L444.6 177.4c-4.8-8.5-13.6-13.4-23-13.4H352c-15.5 0-29.4 8.2-36.9 21.1L288 224h64c17.7 0 32 14.3 32 32v64h32c5.9 0 11.4-1.6 16-4.5l64-39.1c9.2-5.6 14.9-15.7 14.9-26.6v-2.9c.1-8.6-4.9-16.5-12.8-20.5z"/>
                 </svg>
              </div>
            </div>
@@ -68,8 +69,8 @@ export default function Home() {
             </Button>
           </div>
         </section>
-        <section className="bg-secondary/50">
-          <div className="container mx-auto grid gap-12 px-4 py-20 md:grid-cols-3">
+        <section className="bg-secondary/50 py-20">
+          <div className="container mx-auto grid gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-col items-center text-center animate-fade-in-up">
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Zap className="h-8 w-8" />
