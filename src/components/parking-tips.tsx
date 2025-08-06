@@ -62,9 +62,9 @@ export default function ParkingTips({ slots }: ParkingTipsProps) {
                     </Alert>
                 )}
                 {tip && !loading && (
-                    <Alert className="bg-primary/5 border-primary/20">
-                        <Wand2 className="h-4 w-4 text-primary" />
-                        <AlertTitle className="text-primary">Your Tip!</AlertTitle>
+                    <Alert className="bg-yellow-500/10 border-yellow-500/20 text-yellow-900">
+                        <Wand2 className="h-4 w-4 text-yellow-600" />
+                        <AlertTitle className="text-yellow-700">Your Tip!</AlertTitle>
                         <AlertDescription>{tip}</AlertDescription>
                     </Alert>
                 )}
