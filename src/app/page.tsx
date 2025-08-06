@@ -49,7 +49,7 @@ export default function Home() {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
-                  className="w-28 h-28 text-gray-500"
+                  className="w-24 h-24 text-gray-500"
                   fill="currentColor"
                 >
                   <path d="M189.3 128.4L156.8 69.4c-4.8-8.5-13.6-13.4-23-13.4H64c-11.2 0-21.2 5.9-26.6 15.2L2.6 128.4C1 131.2 0 134.3 0 137.5V368c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V336h256v32c0 17.7 14.3 32 32 32h32c17.7 0 32-14.3 32-32V192c0-44.2-35.8-80-80-80h-94.7zM128 248c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24zm192 0c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24z"/>
@@ -71,42 +71,42 @@ export default function Home() {
         </section>
         <section className="bg-secondary/50 py-20">
           <div className="container mx-auto grid gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex flex-col items-center text-center animate-fade-in-up">
+            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.2s'}}>
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Zap className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold">Real-Time Availability</h3>
               <p className="mt-2 text-muted-foreground">Our network of sensors provides up-to-the-second information on which slots are open, so you can head directly to a vacant spot.</p>
             </div>
-            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.4s'}}>
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M12 14h0"/></svg>
               </div>
               <h3 className="text-xl font-semibold">One-Click Booking</h3>
               <p className="mt-2 text-muted-foreground">Found your spot? Reserve it instantly with a single click. We'll hold it for you for 15 minutes, giving you plenty of time to arrive.</p>
             </div>
-            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+            <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.6s'}}>
                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
               </div>
               <h3 className="text-xl font-semibold">AI-Powered Tips</h3>
               <p className="mt-2 text-muted-foreground">Our smart assistant analyzes your parking habits and real-time data to suggest the best available spots for you.</p>
             </div>
-             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.8s'}}>
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Map className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold">Live Map Tracking</h3>
               <p className="mt-2 text-muted-foreground">Navigate the parking lot with ease using our live map, which shows your location and highlights available spots nearby.</p>
             </div>
-             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '1.0s'}}>
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Wallet className="h-8 w-8" />
               </div>
               <h3 className="text-xl font-semibold">Seamless Payments</h3>
               <p className="mt-2 text-muted-foreground">Connect your payment method for hassle-free entry and exit. No need to fumble with cash or cards at the gate.</p>
             </div>
-             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '1.0s'}}>
+             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '1.2s'}}>
               <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
               </div>
