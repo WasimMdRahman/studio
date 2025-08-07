@@ -14,6 +14,7 @@ import {
   query,
   runTransaction,
   writeBatch,
+  setDoc,
 } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -79,10 +80,20 @@ export default function DashboardPage() {
       slotsData.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
       setSlots(slotsData);
       setLoading(false);
+    }, (error) => {
+        console.error("Firestore snapshot error:", error);
+        if (error.code === 'permission-denied') {
+            toast({
+                variant: "destructive",
+                title: "Permission Denied",
+                description: "Please check your Firestore security rules. For development, allow read/write.",
+            });
+        }
+        setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [user, initializeSlots]);
+  }, [user, initializeSlots, toast]);
   
   useEffect(() => {
     const interval = setInterval(() => {
