@@ -16,16 +16,16 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4">Company</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm hover:underline">About Us</Link>
+                <Link href="/about" className="text-sm hover:underline">About Us</Link>
               </li>
               <li>
-                <Link href="#" className="text-sm hover:underline">Features</Link>
+                <Link href="/features" className="text-sm hover:underline">Features</Link>
               </li>
               <li>
-                <Link href="#" className="text-sm hover:underline">Pricing</Link>
+                <Link href="/pricing" className="text-sm hover:underline">Pricing</Link>
               </li>
             </ul>
           </div>
@@ -33,16 +33,16 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm hover:underline">FAQ</Link>
+                <Link href="/faq" className="text-sm hover:underline">FAQ</Link>
               </li>
               <li>
-                <Link href="#" className="text-sm hover:underline">Contact Us</Link>
+                <Link href="/contact" className="text-sm hover:underline">Contact Us</Link>
               </li>
               <li>
-                <Link href="#" className="text-sm hover:underline">Terms of Service</Link>
+                <Link href="/terms" className="text-sm hover:underline">Terms of Service</Link>
               </li>
               <li>
-                <Link href="#" className="text-sm hover:underline">Privacy Policy</Link>
+                <Link href="/privacy" className="text-sm hover:underline">Privacy Policy</Link>
               </li>
             </ul>
           </div>
