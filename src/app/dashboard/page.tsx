@@ -115,6 +115,27 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
+  const sendBookingEmail = async (slotId: string, userEmail: string, expiresAt: number) => {
+    try {
+      await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: userEmail,
+          subject: 'Your ParkWise Booking Confirmation',
+          html: `
+            <h1>Booking Confirmed!</h1>
+            <p>You have successfully booked parking slot <strong>${slotId}</strong>.</p>
+            <p>This booking is valid until: <strong>${new Date(expiresAt).toLocaleString()}</strong>.</p>
+            <p>Thank you for using ParkWise!</p>
+          `,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to send booking email:", error);
+    }
+  };
+
   const handleSlotAction = async (slotId: string) => {
     if (!user) return;
 
@@ -158,6 +179,11 @@ export default function DashboardPage() {
                 expiresAt: expiresAt,
             });
             toast({ title: "Slot Booked!", description: `You have successfully booked slot ${slotId}. It will be held for ${EXPIRATION_MINUTES} minutes.` });
+
+            // Send email after successful transaction
+            if (user.email) {
+              sendBookingEmail(slotId, user.email, expiresAt);
+            }
         } else {
           throw new Error("This slot is not available for booking.");
         }
