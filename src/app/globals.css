@@ -62,18 +62,6 @@
 }
 
 @layer utilities {
-  .animate-slidecar {
-    animation: slidecar 10s ease-in-out infinite;
-  }
-
-  @keyframes slidecar {
-    0% { transform: translateX(-150vw); opacity: 0; }
-    20% { transform: translateX(0); opacity: 1; }
-    30% { transform: translateX(0); opacity: 1; }
-    70% { transform: translateX(150vw); opacity: 1; }
-    100% { transform: translateX(150vw); opacity: 0; }
-  }
-
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out forwards;
   }

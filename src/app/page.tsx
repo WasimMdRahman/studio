@@ -44,57 +44,16 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="container relative mx-auto flex flex-col items-center justify-center px-4 py-16 text-center md:py-24">
-           {/* City Skyline Background */}
-          <div className="absolute inset-0 flex items-end z-0 pointer-events-none opacity-50">
-            <div className="w-20 h-24 bg-gray-300 opacity-30 mr-2 rounded-t-md"></div>
-            <div className="w-16 h-20 bg-gray-400 opacity-25 mr-2 rounded-t-md"></div>
-            <div className="w-24 h-32 bg-gray-200 opacity-30 mr-2 rounded-t-md"></div>
-            <div className="w-8 h-12 bg-gray-400 opacity-20 mr-2 rounded-t-md"></div>
-            <div className="w-32 h-28 bg-gray-300 opacity-20 rounded-t-md"></div>
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
-          </div>
-
-          {/* Road lines */}
-          <div className="absolute bottom-20 w-full flex justify-center z-10">
-            <div className="w-2/3 h-2 border-t-4 border-dashed border-gray-400 opacity-30"></div>
-          </div>
-
-          {/* Car Animation Box */}
-          <div className="relative w-full h-48 flex items-center animate-drive z-20">
-            {/* Car: side view, premium look */}
-            <div className="relative mx-auto w-72 md:w-96 h-28 md:h-32">
-              {/* Car Shadow */}
-              <div className="absolute bottom-0 left-12 right-12 h-5 bg-gray-900 opacity-20 rounded-full blur-sm z-0"></div>
-              
-              {/* Wheels (front/rear) */}
-              <div className="absolute z-10 -bottom-4 left-10 md:left-16 w-10 h-10 bg-black rounded-full border-2 border-gray-700 flex items-center justify-center">
-                <div className="w-5 h-5 bg-gray-400 rounded-full border-2 border-gray-600"></div>
-              </div>
-              <div className="absolute z-10 -bottom-4 right-10 md:right-16 w-10 h-10 bg-black rounded-full border-2 border-gray-700 flex items-center justify-center">
-                <div className="w-5 h-5 bg-gray-400 rounded-full border-2 border-gray-600"></div>
-              </div>
-
-              {/* Exhaust smoke (optional) */}
-              <div className="absolute -left-6 bottom-2 w-3 h-3 bg-gray-400 rounded-full animate-ping opacity-60"></div>
-
-              {/* Car Body */}
-              <div className="relative w-full h-full bg-white rounded-xl shadow-2xl border border-gray-300">
-                {/* Windows (with luxury gradient) */}
-                <div className="absolute z-10 left-12 top-3 w-16 md:w-20 h-7 md:h-8 bg-gradient-to-br from-black via-gray-800 to-gray-700 bg-opacity-80 rounded-sm shadow-inner"></div>
-                <div className="absolute z-10 left-32 md:left-40 top-3 w-14 md:w-16 h-7 md:h-8 bg-gradient-to-br from-black via-gray-900 to-gray-700 bg-opacity-70 rounded-sm shadow-inner"></div>
-
-                {/* Door outlines (shadow lines) */}
-                <div className="absolute left-0 top-0 w-full h-full border-2 border-gray-400 border-dashed opacity-15 pointer-events-none"></div>
-                <div className="absolute left-24 md:left-32 top-4 w-0.5 h-20 bg-gray-300 opacity-40"></div>
-                <div className="absolute left-44 md:left-56 top-4 w-0.5 h-20 bg-gray-300 opacity-50"></div>
-                <div className="absolute top-16 md:top-20 left-10 md:left-14 w-48 md:w-64 h-0.5 bg-gray-300 opacity-30"></div>
-                {/* Door handles (subtle) */}
-                <div className="absolute top-12 md:top-16 left-24 w-6 h-1 rounded bg-gray-400 opacity-30"></div>
-                <div className="absolute top-12 md:top-16 left-44 w-6 h-1 rounded bg-gray-400 opacity-40"></div>
-                
-                {/* Headlights (front/rear) */}
-                <div className="absolute left-0 md:left-1 top-10 w-2 h-4 bg-yellow-300 rounded-l-md shadow-md"></div>
-                <div className="absolute right-0 md:right-1 top-10 w-2 h-4 bg-red-400 rounded-r-md shadow-md"></div>
+          <div className="relative w-full max-w-xs h-16 flex items-center animate-drive">
+            <div className="relative mx-auto w-20 h-8">
+              <div className="absolute -bottom-1 left-3 right-3 h-2 bg-gray-900 opacity-10 rounded-full blur-sm z-0"></div>
+              <div className="absolute z-10 -bottom-2 left-2 w-4 h-4 bg-black rounded-full border border-gray-500"></div>
+              <div className="absolute z-10 -bottom-2 right-2 w-4 h-4 bg-black rounded-full border border-gray-500"></div>
+              <div className="relative w-full h-full bg-white rounded-[6px] shadow-md border border-gray-300 flex">
+                <div className="absolute left-4 top-1 w-8 h-4 bg-blue-900 bg-opacity-80 rounded-[2px]"></div>
+                <div className="absolute left-9 top-1 w-0.5 h-5 bg-gray-300 opacity-40"></div>
+                <div className="absolute left-0 top-3 w-1.5 h-1.5 bg-yellow-300 rounded-full"></div>
+                <div className="absolute right-0 top-3 w-1.5 h-1.5 bg-red-400 rounded-full"></div>
               </div>
             </div>
           </div>
