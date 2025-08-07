@@ -44,16 +44,21 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="container relative mx-auto flex flex-col items-center justify-center px-4 py-16 text-center md:py-24">
-          <div className="relative w-full max-w-xs h-16 flex items-center animate-drive">
-            <div className="relative mx-auto w-20 h-8">
-              <div className="absolute -bottom-1 left-3 right-3 h-2 bg-gray-900 opacity-10 rounded-full blur-sm z-0"></div>
-              <div className="absolute z-10 -bottom-2 left-2 w-4 h-4 bg-black rounded-full border border-gray-500"></div>
-              <div className="absolute z-10 -bottom-2 right-2 w-4 h-4 bg-black rounded-full border border-gray-500"></div>
-              <div className="relative w-full h-full bg-white rounded-[6px] shadow-md border border-gray-300 flex">
-                <div className="absolute left-4 top-1 w-8 h-4 bg-blue-900 bg-opacity-80 rounded-[2px]"></div>
-                <div className="absolute left-9 top-1 w-0.5 h-5 bg-gray-300 opacity-40"></div>
-                <div className="absolute left-0 top-3 w-1.5 h-1.5 bg-yellow-300 rounded-full"></div>
-                <div className="absolute right-0 top-3 w-1.5 h-1.5 bg-red-400 rounded-full"></div>
+          <div className="relative w-full max-w-xs h-20 flex items-center animate-drive">
+            <div className="relative mx-auto w-24 h-10">
+              <div className="absolute z-20 -bottom-2 left-2 w-5 h-5 bg-black rounded-full border-2 border-gray-500 flex items-center justify-center">
+                <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+              </div>
+              <div className="absolute z-20 -bottom-2 right-2 w-5 h-5 bg-black rounded-full border-2 border-gray-500 flex items-center justify-center">
+                <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+              </div>
+              <div className="relative w-full h-8 bg-white rounded-[10px] shadow-md border border-gray-300">
+                <div className="absolute left-2 top-1 w-4 h-4 bg-blue-200 rounded-t-[6px] border border-blue-400"></div>
+                <div className="absolute left-8 top-1 w-4 h-4 bg-blue-200 rounded-t-[6px] border border-blue-400"></div>
+                <div className="absolute left-8 top-0 w-6 h-1 bg-yellow-300 rounded"></div>
+                <div className="absolute left-7 top-1 w-0.5 h-6 bg-gray-400 opacity-40"></div>
+                <div className="absolute left-0 top-3 w-2 h-2 bg-yellow-300 rounded-full"></div>
+                <div className="absolute right-0 top-3 w-2 h-2 bg-red-400 rounded-full"></div>
               </div>
             </div>
           </div>
