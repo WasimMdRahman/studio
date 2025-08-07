@@ -86,7 +86,7 @@ export default function DashboardPage() {
             toast({
                 variant: "destructive",
                 title: "Permission Denied",
-                description: "Please check your Firestore security rules. For development, allow read/write.",
+                description: "Your security rules are blocking reads. For development, use: allow read, write: if true;",
             });
         }
         setLoading(false);
