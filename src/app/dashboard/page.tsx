@@ -85,8 +85,9 @@ export default function DashboardPage() {
         if (error.code === 'permission-denied') {
             toast({
                 variant: "destructive",
-                title: "Permission Denied",
-                description: "Your security rules are blocking reads. For development, use: allow read, write: if true;",
+                title: "Firestore Permission Denied",
+                description: "Your security rules are blocking access. For development, go to your Firebase console -> Firestore -> Rules and use: allow read, write: if true;",
+                duration: 10000,
             });
         }
         setLoading(false);
