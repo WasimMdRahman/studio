@@ -7,6 +7,7 @@ import { Car, Loader2, Map, ParkingSquare, Wallet, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const { user, loading } = useAuth();
@@ -56,6 +57,19 @@ export default function Home() {
             </Button>
           </div>
         </section>
+
+        <section className="container mx-auto px-4 pb-16 md:pb-24">
+          <div className="relative aspect-video w-full max-w-5xl mx-auto rounded-xl shadow-2xl overflow-hidden animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+              <Image 
+                src="https://placehold.co/1200x675.png" 
+                alt="ParkWise in action"
+                layout="fill"
+                objectFit="cover"
+                data-ai-hint="parking lot"
+              />
+          </div>
+        </section>
+
         <section className="bg-secondary/50 py-20">
           <div className="container mx-auto grid gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-col items-center text-center animate-fade-in-up" style={{animationDelay: '0.2s'}}>
