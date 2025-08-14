@@ -13,7 +13,6 @@ import {
   query,
   runTransaction,
   writeBatch,
-  setDoc,
 } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -21,6 +20,7 @@ import { useEffect, useState, useCallback } from "react";
 import type { ParkingSlot } from "@/lib/slots";
 import { PARKING_ZONES, SLOTS_PER_ZONE, EXPIRATION_MINUTES } from "@/lib/slots";
 import { useToast } from "@/hooks/use-toast";
+import CurrentBooking from "@/components/current-booking";
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -223,6 +223,7 @@ export default function DashboardPage() {
               <ParkingGrid slots={slots} onSlotClick={handleSlotAction} currentUserId={user?.uid} />
             </div>
             <div className="flex flex-col gap-8">
+              <CurrentBooking slots={slots} currentUserId={user?.uid} />
               <ParkingStats slots={slots} />
             </div>
           </div>
