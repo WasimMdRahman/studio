@@ -17,23 +17,23 @@ const statusConfig = {
   available: {
     label: "Available",
     icon: Check,
-    cardClass: "border-green-500/50 bg-green-500/20 hover:bg-green-500/30 text-green-900",
-    iconClass: "text-green-700",
-    footerClass: "text-green-800"
+    cardClass: "border-green-500/80 bg-green-500/20 hover:bg-green-500/30 text-green-300",
+    iconClass: "text-green-400",
+    footerClass: "text-green-400"
   },
   booked: {
     label: "Booked",
     icon: Car,
-    cardClass: "border-red-500/50 bg-red-500/10 text-red-900",
-    iconClass: "text-red-600",
-    footerClass: 'text-red-700'
+    cardClass: "border-red-500/80 bg-red-500/20 text-red-300",
+    iconClass: "text-red-400",
+    footerClass: 'text-red-400'
   },
   expired: {
     label: "Expired",
     icon: Clock,
-    cardClass: "border-gray-500/30 bg-gray-500/50 text-gray-800",
-    iconClass: "text-gray-600",
-    footerClass: "text-gray-700",
+    cardClass: "border-gray-500/30 bg-gray-500/50 text-gray-400",
+    iconClass: "text-gray-500",
+    footerClass: "text-gray-500",
   }
 };
 
@@ -68,20 +68,20 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
 
   const config = statusConfig[slot.status];
   const cardClasses = cn(
-    "text-center transition-colors",
+    "text-center transition-colors glassmorphism",
     config.cardClass,
-    isClickable ? "cursor-pointer" : "cursor-not-allowed opacity-80",
-    isBookedByCurrentUser && "border-yellow-500 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-900"
+    isClickable ? "cursor-pointer" : "cursor-not-allowed opacity-60",
+    isBookedByCurrentUser && "border-blue-400/80 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300"
   );
   const iconClasses = cn(
     "mx-auto h-8 w-8",
     config.iconClass,
-    isBookedByCurrentUser && "text-yellow-700"
+    isBookedByCurrentUser && "text-blue-400"
   );
   
   const footerClasses = cn(
     "p-2 pt-0 text-xs flex justify-center h-4",
-    isBookedByCurrentUser ? "text-yellow-800" : config.footerClass
+    isBookedByCurrentUser ? "text-blue-300" : config.footerClass
   );
 
   return (

@@ -62,8 +62,8 @@ export default function CurrentBooking({ slots, currentUserId }: CurrentBookingP
             <div className="flex justify-between items-center">
               <span className="text-muted-foreground">Time Left</span>
               <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-yellow-600" />
-                <span className="font-bold text-yellow-700 text-lg">{countdown}</span>
+                <Clock className="h-5 w-5 text-blue-400" />
+                <span className="font-bold text-blue-300 text-lg">{countdown}</span>
               </div>
             </div>
           </div>
