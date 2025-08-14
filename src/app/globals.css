@@ -23,7 +23,6 @@
     --border: 190 90% 50%;
     --input: 216 34% 17%;
     --ring: 175 90% 45%;
-    --radius: 0.5rem;
     --success: 140 70% 40%;
     --success-foreground: 210 40% 98%;
   }
@@ -61,7 +60,7 @@
     @apply text-[106.25%];
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-lg;
   }
 }
 
@@ -79,6 +78,25 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   .glassmorphism {

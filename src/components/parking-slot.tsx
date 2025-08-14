@@ -18,14 +18,14 @@ const statusConfig = {
     label: "Available",
     icon: Check,
     cardClass: "border-green-500/80 bg-green-500/20 hover:bg-green-500/30 text-green-300",
-    iconClass: "text-green-400",
+    iconClass: "text-green-400 animate-pulse-slow",
     footerClass: "text-green-400"
   },
   booked: {
     label: "Booked",
     icon: Car,
     cardClass: "border-red-500/80 bg-red-500/20 text-red-300",
-    iconClass: "text-red-400",
+    iconClass: "text-red-400 animate-float",
     footerClass: 'text-red-400'
   },
   expired: {
@@ -76,7 +76,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
   const iconClasses = cn(
     "mx-auto h-8 w-8",
     config.iconClass,
-    isBookedByCurrentUser && "text-blue-400"
+    isBookedByCurrentUser && "text-blue-400 animate-float"
   );
   
   const footerClasses = cn(
