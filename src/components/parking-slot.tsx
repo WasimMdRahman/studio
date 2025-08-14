@@ -103,7 +103,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
               {isBookedByCurrentUser ? (
                 <span className="font-medium">{countdown} left</span>
               ) : slot.status === 'booked' ? (
-                'Booked'
+                <span className="font-medium truncate">{slot.userEmail}</span>
               ) : (
                 'Available'
               )}
@@ -114,7 +114,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
             {isBookedByCurrentUser ? (
                 <p>Click to cancel your booking.</p>
             ) : slot.status === 'booked' ? (
-                <p>Booked by another user.</p>
+                <p>Booked by {slot.userEmail}.</p>
             ) : slot.status === 'available' ? (
                 <p>Click to book this slot.</p>
             ) : (
