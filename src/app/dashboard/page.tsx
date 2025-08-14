@@ -3,7 +3,6 @@
 import Header from "@/components/header";
 import ParkingGrid from "@/components/parking-grid";
 import ParkingStats from "@/components/parking-stats";
-import ParkingTips from "@/components/parking-tips";
 import { useAuth } from "@/components/auth-provider";
 import { db } from "@/lib/firebase";
 import {
@@ -225,7 +224,6 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-8">
               <ParkingStats slots={slots} />
-              <ParkingTips slots={slots} />
             </div>
           </div>
         </div>
