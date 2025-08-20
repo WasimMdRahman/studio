@@ -39,8 +39,8 @@ export default function SignupPage() {
         const parsedDetails = JSON.parse(bookingDetails);
         userData.name = parsedDetails.name;
         userData.carNumber = parsedDetails.carNumber;
-        userData.checkIn = parsedDetails.checkIn;
-        userData.checkOut = parsedDetails.checkOut;
+        userData.checkInTime = parsedDetails.checkIn; // Changed from checkIn
+        userData.checkOutTime = parsedDetails.checkOut; // Changed from checkOut
         // Save booking details to a 'users' collection with booking info
         await setDoc(doc(db, "users", user.uid), userData);
         localStorage.removeItem('bookingDetails'); // Clean up

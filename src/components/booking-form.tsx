@@ -17,10 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useRouter } from "next/navigation";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "./ui/calendar";
 import { format } from "date-fns";
 
 const bookingFormSchema = z.object({
@@ -30,11 +26,11 @@ const bookingFormSchema = z.object({
   carNumber: z.string().min(3, {
     message: "Car number must be at least 3 characters.",
   }),
-  checkIn: z.date({
-    required_error: "A check-in date is required.",
+  checkIn: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+    message: "Invalid time format. Use HH:MM.",
   }),
-  checkOut: z.date({
-    required_error: "A check-out date is required.",
+  checkOut: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+    message: "Invalid time format. Use HH:MM.",
   }),
 });
 
@@ -47,8 +43,8 @@ export function BookingForm() {
     defaultValues: {
       name: "",
       carNumber: "",
-      checkIn: new Date(),
-      checkOut: new Date(new Date().setDate(new Date().getDate() + 1)),
+      checkIn: "09:00",
+      checkOut: "17:00",
     },
   });
 
@@ -97,39 +93,11 @@ export function BookingForm() {
                     control={form.control}
                     name="checkIn"
                     render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                        <FormLabel>Check-in Date</FormLabel>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                variant={"outline"}
-                                className={cn(
-                                    "w-full pl-3 text-left font-normal",
-                                    !field.value && "text-muted-foreground"
-                                )}
-                                >
-                                {field.value ? (
-                                    format(field.value, "PPP")
-                                ) : (
-                                    <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                            </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date) =>
-                                date < new Date(new Date().setDate(new Date().getDate() -1))
-                                }
-                                initialFocus
-                            />
-                            </PopoverContent>
-                        </Popover>
+                        <FormItem>
+                        <FormLabel>Check-in Time</FormLabel>
+                        <FormControl>
+                            <Input type="time" {...field} />
+                        </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
@@ -138,39 +106,11 @@ export function BookingForm() {
                     control={form.control}
                     name="checkOut"
                     render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                        <FormLabel>Check-out Date</FormLabel>
-                        <Popover>
-                            <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                variant={"outline"}
-                                className={cn(
-                                    "w-full pl-3 text-left font-normal",
-                                    !field.value && "text-muted-foreground"
-                                )}
-                                >
-                                {field.value ? (
-                                    format(field.value, "PPP")
-                                ) : (
-                                    <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                            </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date) =>
-                                date < form.getValues('checkIn')
-                                }
-                                initialFocus
-                            />
-                            </PopoverContent>
-                        </Popover>
+                        <FormItem>
+                        <FormLabel>Check-out Time</FormLabel>
+                        <FormControl>
+                            <Input type="time" {...field} />
+                        </FormControl>
                         <FormMessage />
                         </FormItem>
                     )}
