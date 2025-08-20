@@ -12,7 +12,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent, useEffect } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -32,14 +32,20 @@ export default function SignupPage() {
       const bookingDetails = localStorage.getItem('bookingDetails');
       if (bookingDetails) {
         const parsedDetails = JSON.parse(bookingDetails);
-        // Save booking details to Firestore
-        await setDoc(doc(db, "bookings", user.uid), {
-          ...parsedDetails,
-          userId: user.uid,
+        // Save booking details to a 'users' collection with booking info
+        await setDoc(doc(db, "users", user.uid), {
           email: user.email,
+          name: parsedDetails.name,
+          carNumber: parsedDetails.carNumber,
           createdAt: new Date(),
         });
         localStorage.removeItem('bookingDetails'); // Clean up
+      } else {
+        // If no booking details, still create a user document
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          createdAt: new Date(),
+        });
       }
 
       toast({ title: "Success", description: "Account created successfully." });
