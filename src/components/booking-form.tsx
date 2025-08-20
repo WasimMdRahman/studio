@@ -26,10 +26,10 @@ const bookingFormSchema = z.object({
   carNumber: z.string().min(3, {
     message: "Car number must be at least 3 characters.",
   }),
-  checkIn: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+  checkIn: z.string().regex(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/, {
     message: "Invalid time format. Use HH:MM.",
   }),
-  checkOut: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+  checkOut: z.string().regex(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/, {
     message: "Invalid time format. Use HH:MM.",
   }),
 });
@@ -44,7 +44,7 @@ export function BookingForm() {
       name: "",
       carNumber: "",
       checkIn: "09:00",
-      checkOut: "17:00",
+      checkOut: "05:00",
     },
   });
 
