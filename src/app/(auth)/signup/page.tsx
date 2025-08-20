@@ -30,22 +30,23 @@ export default function SignupPage() {
 
       // Check for booking details in local storage
       const bookingDetails = localStorage.getItem('bookingDetails');
+      const userData: { [key: string]: any } = {
+        email: user.email,
+        createdAt: new Date(),
+      };
+
       if (bookingDetails) {
         const parsedDetails = JSON.parse(bookingDetails);
+        userData.name = parsedDetails.name;
+        userData.carNumber = parsedDetails.carNumber;
+        userData.checkIn = parsedDetails.checkIn;
+        userData.checkOut = parsedDetails.checkOut;
         // Save booking details to a 'users' collection with booking info
-        await setDoc(doc(db, "users", user.uid), {
-          email: user.email,
-          name: parsedDetails.name,
-          carNumber: parsedDetails.carNumber,
-          createdAt: new Date(),
-        });
+        await setDoc(doc(db, "users", user.uid), userData);
         localStorage.removeItem('bookingDetails'); // Clean up
       } else {
         // If no booking details, still create a user document
-        await setDoc(doc(db, "users", user.uid), {
-          email: user.email,
-          createdAt: new Date(),
-        });
+        await setDoc(doc(db, "users", user.uid), userData);
       }
 
       toast({ title: "Success", description: "Account created successfully." });
