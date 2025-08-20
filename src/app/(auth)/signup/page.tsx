@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -5,12 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, useEffect } from "react";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -23,7 +25,23 @@ export default function SignupPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Check for booking details in local storage
+      const bookingDetails = localStorage.getItem('bookingDetails');
+      if (bookingDetails) {
+        const parsedDetails = JSON.parse(bookingDetails);
+        // Save booking details to Firestore
+        await setDoc(doc(db, "bookings", user.uid), {
+          ...parsedDetails,
+          userId: user.uid,
+          email: user.email,
+          createdAt: new Date(),
+        });
+        localStorage.removeItem('bookingDetails'); // Clean up
+      }
+
       toast({ title: "Success", description: "Account created successfully." });
       router.push("/dashboard");
     } catch (error: any) {

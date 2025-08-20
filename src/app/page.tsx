@@ -53,7 +53,7 @@ export default function Home() {
           </p>
           <div className="mt-8 flex gap-4 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
             <Button size="lg" asChild>
-              <Link href="/signup">Get Started</Link>
+              <Link href="/booking">Get Started</Link>
             </Button>
           </div>
         </section>
