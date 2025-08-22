@@ -1,9 +1,10 @@
+
 "use client";
 
 import type { ParkingSlot as ParkingSlotType } from "@/lib/slots";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { cn } from "@/lib/utils";
-import { Car, Check, Clock } from "lucide-react";
+import { Car, Check, Clock, User } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { useEffect, useState } from "react";
 
@@ -50,9 +51,10 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
         const now = Date.now();
         const timeLeft = slot.expiresAt! - now;
         if (timeLeft > 0) {
+          const hours = Math.floor(timeLeft / (1000 * 60 * 60));
           const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
           const seconds = Math.floor((timeLeft / 1000) % 60);
-          setCountdown(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+          setCountdown(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
         } else {
           setCountdown("Expired");
           if(interval) clearInterval(interval);
@@ -80,7 +82,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
   );
   
   const footerClasses = cn(
-    "p-2 pt-0 text-xs flex justify-center h-4",
+    "p-2 pt-0 text-xs flex justify-center items-center gap-1 h-4",
     isBookedByCurrentUser ? "text-blue-300" : config.footerClass
   );
 
@@ -103,7 +105,10 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
               {isBookedByCurrentUser ? (
                 <span className="font-medium">{countdown} left</span>
               ) : slot.status === 'booked' ? (
-                <span className="font-medium truncate">{slot.userEmail}</span>
+                <>
+                <User className="h-3 w-3"/>
+                <span className="font-medium truncate">{slot.userName}</span>
+                </>
               ) : (
                 'Available'
               )}
@@ -114,7 +119,7 @@ export default function ParkingSlot({ slot, onClick, currentUserId }: ParkingSlo
             {isBookedByCurrentUser ? (
                 <p>Click to cancel your booking.</p>
             ) : slot.status === 'booked' ? (
-                <p>Booked by {slot.userEmail}.</p>
+                <p>Booked by {slot.userName} ({slot.carNumber}).</p>
             ) : slot.status === 'available' ? (
                 <p>Click to book this slot.</p>
             ) : (

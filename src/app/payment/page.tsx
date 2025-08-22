@@ -71,6 +71,8 @@ export default function PaymentPage() {
                 status: "booked",
                 bookedBy: user.uid,
                 userEmail: user.email,
+                userName: bookingDetails.name,
+                carNumber: bookingDetails.carNumber,
                 bookedAt: now,
                 expiresAt: expiresAt,
             });
@@ -116,6 +118,10 @@ export default function PaymentPage() {
                   </CardHeader>
                   <CardContent>
                       <p>You have successfully booked slot <strong className="text-primary">{bookingDetails.slotId}</strong> for <strong className="text-primary">{bookingDetails.durationHours} {bookingDetails.durationHours > 1 ? "hours" : "hour"}</strong>.</p>
+                      <div className="text-left mt-4 text-sm text-muted-foreground space-y-2">
+                        <p><strong>Name:</strong> {bookingDetails.name}</p>
+                        <p><strong>Car Number:</strong> {bookingDetails.carNumber}</p>
+                      </div>
                   </CardContent>
                   <CardFooter>
                       <Button className="w-full" onClick={() => router.push('/dashboard')}>Back to Dashboard</Button>
@@ -135,6 +141,10 @@ export default function PaymentPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+            <div className="text-sm text-muted-foreground space-y-1">
+                <p><strong>Name:</strong> {bookingDetails.name}</p>
+                <p><strong>Car Number:</strong> {bookingDetails.carNumber}</p>
+            </div>
             <div className="flex items-center justify-center rounded-lg border bg-background/50 p-6">
                 <span className="text-muted-foreground mr-2">Total Amount:</span>
                 <span className="text-3xl font-bold text-primary">${bookingDetails.totalPrice}</span>

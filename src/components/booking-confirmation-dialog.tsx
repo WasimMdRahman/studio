@@ -15,6 +15,7 @@ import {
 import { Label } from "./ui/label";
 import { Slider } from "./ui/slider";
 import type { ParkingSlot, BookingDetails } from "@/lib/slots";
+import { Input } from "./ui/input";
 
 interface BookingConfirmationDialogProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ export default function BookingConfirmationDialog({
   onConfirm,
 }: BookingConfirmationDialogProps) {
   const [duration, setDuration] = useState(1); // Default to 1 hour
+  const [name, setName] = useState("");
+  const [carNumber, setCarNumber] = useState("");
 
   const calculatePrice = (hours: number) => {
     if (hours <= 0) return 0;
@@ -44,6 +47,8 @@ export default function BookingConfirmationDialog({
       slotId: slot.id,
       durationHours: duration,
       totalPrice: totalPrice,
+      name: name,
+      carNumber: carNumber,
     });
   };
 
@@ -53,10 +58,18 @@ export default function BookingConfirmationDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm your booking for Slot {slot.id}</AlertDialogTitle>
           <AlertDialogDescription>
-            Please select your desired parking duration. The price will be calculated accordingly.
+            Please provide your details and select your desired parking duration.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="my-4 space-y-4">
+            <div className="grid gap-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input id="name" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+             <div className="grid gap-2">
+                <Label htmlFor="carNumber">Car Number</Label>
+                <Input id="carNumber" placeholder="ABC-123" value={carNumber} onChange={(e) => setCarNumber(e.target.value)} />
+            </div>
             <div className="grid gap-2">
                  <Label htmlFor="duration">Parking Duration (hours)</Label>
                  <Slider
@@ -82,7 +95,7 @@ export default function BookingConfirmationDialog({
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm}>Proceed to Payment</AlertDialogAction>
+          <AlertDialogAction onClick={handleConfirm} disabled={!name || !carNumber}>Proceed to Payment</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

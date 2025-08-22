@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,7 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "./auth-provider";
+
 
 const bookingFormSchema = z.object({
   name: z.string().min(2, {
@@ -26,38 +27,48 @@ const bookingFormSchema = z.object({
   carNumber: z.string().min(3, {
     message: "Car number must be at least 3 characters.",
   }),
-  checkIn: z.string().regex(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/, {
-    message: "Invalid time format. Use HH:MM.",
-  }),
-  checkOut: z.string().regex(/^(0?[1-9]|1[0-2]):[0-5][0-9]$/, {
-    message: "Invalid time format. Use HH:MM.",
-  }),
 });
 
 export type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
 export function BookingForm() {
   const router = useRouter();
+  const { toast } = useToast();
+  const { user } = useAuth();
+
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
       name: "",
       carNumber: "",
-      checkIn: "09:00",
-      checkOut: "05:00",
     },
   });
 
   function onSubmit(data: BookingFormValues) {
-    localStorage.setItem("bookingDetails", JSON.stringify(data));
-    router.push("/signup");
+    // This form is now primarily for users who aren't signed in.
+    // We will store their details to pre-fill the signup form.
+    const bookingDetails = {
+        ...data,
+        // We add a placeholder for slot details which will be selected on the dashboard
+        slotId: null, 
+        durationHours: null,
+        totalPrice: null,
+    }
+    localStorage.setItem("pendingBooking", JSON.stringify(bookingDetails));
+
+    if(user) {
+        toast({ title: "Info", description: "Please select a slot from the dashboard to book."});
+        router.push('/dashboard');
+    } else {
+        router.push("/signup");
+    }
   }
 
   return (
     <Card className="animate-fade-in-up">
         <CardHeader>
-            <CardTitle className="text-3xl">Book Your Spot</CardTitle>
-            <CardDescription>{format(new Date(), "EEEE, MMMM do")}</CardDescription>
+            <CardTitle className="text-3xl">Enter Your Details</CardTitle>
+            <CardDescription>First, let us know who you are and what you're driving.</CardDescription>
         </CardHeader>
         <CardContent>
             <Form {...form}>
@@ -88,35 +99,9 @@ export function BookingForm() {
                     </FormItem>
                 )}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <FormField
-                    control={form.control}
-                    name="checkIn"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Check-in Time</FormLabel>
-                        <FormControl>
-                            <Input type="time" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                     <FormField
-                    control={form.control}
-                    name="checkOut"
-                    render={({ field }) => (
-                        <FormItem>
-                        <FormLabel>Check-out Time</FormLabel>
-                        <FormControl>
-                            <Input type="time" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                </div>
-                <Button type="submit" className="w-full">Proceed to Sign Up</Button>
+                <Button type="submit" className="w-full">
+                    {user ? 'Go to Dashboard' : 'Proceed to Sign Up'}
+                </Button>
             </form>
             </Form>
         </CardContent>

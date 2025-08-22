@@ -117,7 +117,9 @@ export default function DashboardPage() {
               bookedBy: null,
               bookedAt: null,
               expiresAt: null,
-              userEmail: null
+              userEmail: null,
+              userName: null,
+              carNumber: null
             });
           });
           batch.commit().then(() => {
@@ -168,6 +170,8 @@ export default function DashboardPage() {
             bookedAt: null,
             expiresAt: null,
             userEmail: null,
+            userName: null,
+            carNumber: null,
         });
         toast({ title: "Booking Cancelled", description: `You have cancelled your booking for slot ${slotId}.` });
       });
@@ -201,8 +205,15 @@ export default function DashboardPage() {
 
   const handleBookingConfirm = (details: BookingDetails) => {
     setConfirmOpen(false);
-    localStorage.setItem('pendingBooking', JSON.stringify(details));
-    router.push('/payment');
+    if (!user) {
+        // If user not logged in, store details and redirect to signup
+        localStorage.setItem('pendingBooking', JSON.stringify(details));
+        router.push('/signup');
+    } else {
+        // If user is logged in, proceed to payment
+        localStorage.setItem('pendingBooking', JSON.stringify(details));
+        router.push('/payment');
+    }
   }
 
   if (authLoading || loading) {

@@ -1,3 +1,4 @@
+
 export interface ParkingSlot {
   id: string;
   status: 'available' | 'booked' | 'expired';
@@ -5,12 +6,16 @@ export interface ParkingSlot {
   bookedAt?: number | null;
   expiresAt?: number | null;
   userEmail?: string | null;
+  userName?: string | null;
+  carNumber?: string | null;
 }
 
 export interface BookingDetails {
     slotId: string;
     durationHours: number;
     totalPrice: number;
+    name: string;
+    carNumber: string;
 }
 
 export const PARKING_ZONES = ['A', 'B', 'C', 'D'];
