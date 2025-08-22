@@ -1,3 +1,4 @@
+
 "use client";
 
 import Header from "@/components/header";
@@ -21,6 +22,8 @@ import type { ParkingSlot } from "@/lib/slots";
 import { PARKING_ZONES, SLOTS_PER_ZONE, EXPIRATION_MINUTES } from "@/lib/slots";
 import { useToast } from "@/hooks/use-toast";
 import CurrentBooking from "@/components/current-booking";
+import BookingConfirmationDialog from "@/components/booking-confirmation-dialog";
+import type { BookingDetails } from "@/lib/slots";
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -29,6 +32,8 @@ export default function DashboardPage() {
 
   const [slots, setSlots] = useState<ParkingSlot[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSlot, setSelectedSlot] = useState<ParkingSlot | null>(null);
+  const [isConfirmOpen, setConfirmOpen] = useState(false);
 
   const initializeSlots = useCallback(async () => {
     console.log("Checking if slots need initialization...");
@@ -147,63 +152,58 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSlotAction = async (slotId: string) => {
-    if (!user) return;
-
+  const handleCancelBooking = async (slotId: string) => {
+     if (!user) return;
     try {
       await runTransaction(db, async (transaction) => {
-        const slotsRef = collection(db, "slots");
-        const allSlotsSnapshot = await getDocs(query(slotsRef));
-        const allSlots = allSlotsSnapshot.docs.map(d => d.data() as ParkingSlot);
-        const userHasBooking = allSlots.find(s => s.bookedBy === user.uid);
-        
         const slotRef = doc(db, "slots", slotId);
         const slotDoc = await transaction.get(slotRef);
 
-        if (!slotDoc.exists()) {
-          throw new Error("Slot does not exist!");
+        if (!slotDoc.exists() || slotDoc.data().bookedBy !== user.uid) {
+            throw new Error("Cannot cancel this booking.");
         }
-
-        const currentSlotData = slotDoc.data() as ParkingSlot;
-
-        if (currentSlotData.status === "booked" && currentSlotData.bookedBy === user.uid) {
-            transaction.update(slotRef, {
-                status: "available",
-                bookedBy: null,
-                bookedAt: null,
-                expiresAt: null,
-                userEmail: null,
-            });
-            toast({ title: "Booking Cancelled", description: `You have cancelled your booking for slot ${slotId}.` });
-        }
-        else if (currentSlotData.status === "available") {
-            if (userHasBooking) {
-                throw new Error(`You already have a booking for slot ${userHasBooking.id}.`);
-            }
-            const now = Date.now();
-            const expiresAt = now + EXPIRATION_MINUTES * 60 * 1000;
-            transaction.update(slotRef, {
-                status: "booked",
-                bookedBy: user.uid,
-                userEmail: user.email,
-                bookedAt: now,
-                expiresAt: expiresAt,
-            });
-            toast({ title: "Slot Booked!", description: `You have successfully booked slot ${slotId}. It will be held for ${EXPIRATION_MINUTES} minutes.` });
-
-            // Send email after successful transaction
-            if (user.email) {
-              sendBookingEmail(slotId, user.email, expiresAt);
-            }
-        } else {
-          throw new Error("This slot is not available for booking.");
-        }
+        transaction.update(slotRef, {
+            status: "available",
+            bookedBy: null,
+            bookedAt: null,
+            expiresAt: null,
+            userEmail: null,
+        });
+        toast({ title: "Booking Cancelled", description: `You have cancelled your booking for slot ${slotId}.` });
       });
     } catch (error: any) {
-      console.error("Transaction failed: ", error);
-      toast({ variant: "destructive", title: "Action Failed", description: error.message });
+        console.error("Transaction failed: ", error);
+        toast({ variant: "destructive", title: "Action Failed", description: error.message });
+    }
+  }
+
+  const handleSlotClick = async (slotId: string) => {
+    if (!user) return;
+    const slot = slots.find(s => s.id === slotId);
+    if(!slot) return;
+
+    if (slot.status === 'booked' && slot.bookedBy === user.uid) {
+      handleCancelBooking(slotId);
+    } else if (slot.status === 'available') {
+      const userHasBooking = slots.find(s => s.bookedBy === user.uid);
+      if (userHasBooking) {
+        toast({
+          variant: "destructive",
+          title: "Action Failed",
+          description: `You already have a booking for slot ${userHasBooking.id}.`,
+        });
+        return;
+      }
+      setSelectedSlot(slot);
+      setConfirmOpen(true);
     }
   };
+
+  const handleBookingConfirm = (details: BookingDetails) => {
+    setConfirmOpen(false);
+    localStorage.setItem('pendingBooking', JSON.stringify(details));
+    router.push('/payment');
+  }
 
   if (authLoading || loading) {
     return (
@@ -220,7 +220,7 @@ export default function DashboardPage() {
         <div className="container mx-auto">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <ParkingGrid slots={slots} onSlotClick={handleSlotAction} currentUserId={user?.uid} />
+              <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={user?.uid} />
             </div>
             <div className="flex flex-col gap-8">
               <CurrentBooking slots={slots} currentUserId={user?.uid} />
@@ -229,6 +229,14 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
+      {selectedSlot && (
+         <BookingConfirmationDialog 
+            isOpen={isConfirmOpen}
+            onOpenChange={setConfirmOpen}
+            slot={selectedSlot}
+            onConfirm={handleBookingConfirm}
+         />
+      )}
     </div>
   );
 }

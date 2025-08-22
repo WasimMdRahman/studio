@@ -7,6 +7,12 @@ export interface ParkingSlot {
   userEmail?: string | null;
 }
 
+export interface BookingDetails {
+    slotId: string;
+    durationHours: number;
+    totalPrice: number;
+}
+
 export const PARKING_ZONES = ['A', 'B', 'C', 'D'];
 export const SLOTS_PER_ZONE = 6;
 export const TOTAL_SLOTS = PARKING_ZONES.length * SLOTS_PER_ZONE;
