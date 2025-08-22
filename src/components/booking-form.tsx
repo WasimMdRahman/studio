@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "./auth-provider";
 
 
@@ -33,7 +32,6 @@ export type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
 export function BookingForm() {
   const router = useRouter();
-  const { toast } = useToast();
   const { user } = useAuth();
 
   const form = useForm<BookingFormValues>({
@@ -45,19 +43,10 @@ export function BookingForm() {
   });
 
   function onSubmit(data: BookingFormValues) {
-    // This form is now primarily for users who aren't signed in.
-    // We will store their details to pre-fill the signup form.
-    const bookingDetails = {
-        ...data,
-        // We add a placeholder for slot details which will be selected on the dashboard
-        slotId: null, 
-        durationHours: null,
-        totalPrice: null,
-    }
-    localStorage.setItem("pendingBooking", JSON.stringify(bookingDetails));
+    // We store the details to pre-fill the confirmation dialog on the dashboard.
+    localStorage.setItem("userDetails", JSON.stringify(data));
 
     if(user) {
-        toast({ title: "Info", description: "Please select a slot from the dashboard to book."});
         router.push('/dashboard');
     } else {
         router.push("/signup");
@@ -68,7 +57,7 @@ export function BookingForm() {
     <Card className="animate-fade-in-up">
         <CardHeader>
             <CardTitle className="text-3xl">Enter Your Details</CardTitle>
-            <CardDescription>First, let us know who you are and what you're driving.</CardDescription>
+            <CardDescription>First, let us know who you are and what you're driving. Then you can select a slot.</CardDescription>
         </CardHeader>
         <CardContent>
             <Form {...form}>

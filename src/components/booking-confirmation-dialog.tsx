@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +33,17 @@ export default function BookingConfirmationDialog({
   const [duration, setDuration] = useState(1); // Default to 1 hour
   const [name, setName] = useState("");
   const [carNumber, setCarNumber] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      const storedDetails = localStorage.getItem('userDetails');
+      if (storedDetails) {
+        const { name, carNumber } = JSON.parse(storedDetails);
+        setName(name);
+        setCarNumber(carNumber);
+      }
+    }
+  }, [isOpen]);
 
   const calculatePrice = (hours: number) => {
     if (hours <= 0) return 0;

@@ -133,27 +133,6 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const sendBookingEmail = async (slotId: string, userEmail: string, expiresAt: number) => {
-    try {
-      await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: userEmail,
-          subject: 'Your ParkWise Booking Confirmation',
-          html: `
-            <h1>Booking Confirmed!</h1>
-            <p>You have successfully booked parking slot <strong>${slotId}</strong>.</p>
-            <p>This booking is valid until: <strong>${new Date(expiresAt).toLocaleString()}</strong>.</p>
-            <p>Thank you for using ParkWise!</p>
-          `,
-        }),
-      });
-    } catch (error) {
-      console.error("Failed to send booking email:", error);
-    }
-  };
-
   const handleCancelBooking = async (slotId: string) => {
      if (!user) return;
     try {
@@ -206,11 +185,10 @@ export default function DashboardPage() {
   const handleBookingConfirm = (details: BookingDetails) => {
     setConfirmOpen(false);
     if (!user) {
-        // If user not logged in, store details and redirect to signup
-        localStorage.setItem('pendingBooking', JSON.stringify(details));
-        router.push('/signup');
+        // This case should ideally not happen if they are on the dashboard,
+        // but as a fallback, we redirect to login.
+        router.push('/login');
     } else {
-        // If user is logged in, proceed to payment
         localStorage.setItem('pendingBooking', JSON.stringify(details));
         router.push('/payment');
     }

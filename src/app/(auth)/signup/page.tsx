@@ -11,27 +11,15 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, type FormEvent, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
 
 export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [carNumber, setCarNumber] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const pendingBooking = localStorage.getItem('pendingBooking');
-    if (pendingBooking) {
-        const { name, carNumber } = JSON.parse(pendingBooking);
-        setName(name);
-        setCarNumber(carNumber);
-    }
-  }, []);
 
   const handleSignup = async (e: FormEvent) => {
     e.preventDefault();
@@ -43,20 +31,10 @@ export default function SignupPage() {
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         createdAt: new Date(),
-        name: name,
-        carNumber: carNumber
       });
       
-      const pendingBooking = localStorage.getItem('pendingBooking');
-
-      if (pendingBooking) {
-        // We have a pending booking, proceed to payment
-        router.push("/payment");
-      } else {
-        // No pending booking, go to dashboard
-        toast({ title: "Success", description: "Account created successfully." });
-        router.push("/dashboard");
-      }
+      toast({ title: "Success", description: "Account created successfully. Please log in." });
+      router.push("/login");
 
     } catch (error: any) {
       toast({
@@ -79,28 +57,6 @@ export default function SignupPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSignup} className="grid gap-4">
-            <div className="grid gap-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                id="name"
-                placeholder="John Doe"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={loading}
-                />
-            </div>
-            <div className="grid gap-2">
-                <Label htmlFor="carNumber">Car Number</Label>
-                <Input
-                id="carNumber"
-                placeholder="ABC-123"
-                required
-                value={carNumber}
-                onChange={(e) => setCarNumber(e.target.value)}
-                disabled={loading}
-                />
-            </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -140,3 +96,4 @@ export default function SignupPage() {
     </Card>
   );
 }
+
