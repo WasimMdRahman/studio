@@ -7,10 +7,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { doc, runTransaction } from "firebase/firestore";
-import { Loader2, CreditCard, CheckCircle } from "lucide-react";
+import { Loader2, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { BookingDetails } from "@/lib/slots";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function PaymentPage() {
   const { user, loading: authLoading } = useAuth();
@@ -19,13 +20,15 @@ export default function PaymentPage() {
   const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(null);
   const [processing, setProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  
+  // IMPORTANT: Replace "YOUR_PAYPAL_CLIENT_ID" with your actual client ID from your PayPal Developer Dashboard.
+  const PAYPAL_CLIENT_ID = "YOUR_PAYPAL_CLIENT_ID";
 
   useEffect(() => {
     const details = localStorage.getItem('pendingBooking');
     if (details) {
       setBookingDetails(JSON.parse(details));
     } else {
-      // No booking details, redirect to dashboard
       router.push('/dashboard');
     }
   }, [router]);
@@ -51,7 +54,7 @@ export default function PaymentPage() {
     }
   };
 
-  const handlePayment = async () => {
+  const handleSuccessfulPayment = async () => {
     if (!user || !bookingDetails) return;
     setProcessing(true);
 
@@ -78,22 +81,18 @@ export default function PaymentPage() {
             });
         });
 
-        // Simulate payment success
-        setTimeout(() => {
-            setPaymentSuccess(true);
-            setProcessing(false);
-            localStorage.removeItem('pendingBooking');
-            toast({ title: "Payment Successful!", description: `Slot ${bookingDetails.slotId} booked for ${bookingDetails.durationHours} hours.` });
-            if (user.email) {
-              const expiresAt = Date.now() + bookingDetails.durationHours * 60 * 60 * 1000;
-              sendBookingEmail(bookingDetails.slotId, user.email, expiresAt);
-            }
-        }, 1500);
-
+        setPaymentSuccess(true);
+        setProcessing(false);
+        localStorage.removeItem('pendingBooking');
+        toast({ title: "Payment Successful!", description: `Slot ${bookingDetails.slotId} booked for ${bookingDetails.durationHours} hours.` });
+        if (user.email) {
+          const expiresAt = Date.now() + bookingDetails.durationHours * 60 * 60 * 1000;
+          sendBookingEmail(bookingDetails.slotId, user.email, expiresAt);
+        }
 
     } catch (error: any) {
-        console.error("Payment failed: ", error);
-        toast({ variant: "destructive", title: "Payment Failed", description: error.message });
+        console.error("Booking update failed: ", error);
+        toast({ variant: "destructive", title: "Action Failed", description: error.message });
         setProcessing(false);
         router.push('/dashboard');
     }
@@ -135,7 +134,7 @@ export default function PaymentPage() {
     <div className="flex h-screen items-center justify-center bg-secondary/20 p-4">
       <Card className="w-full max-w-md animate-fade-in-up">
         <CardHeader>
-          <CardTitle className="text-2xl">Complete Your Payment</CardTitle>
+          <CardTitle className="text-2xl">Complete Your Booking</CardTitle>
           <CardDescription>
             You are booking slot <span className="font-bold text-primary">{bookingDetails.slotId}</span> for <span className="font-bold text-primary">{bookingDetails.durationHours} {bookingDetails.durationHours > 1 ? "hours" : "hour"}</span>.
           </CardDescription>
@@ -149,25 +148,50 @@ export default function PaymentPage() {
                 <span className="text-muted-foreground mr-2">Total Amount:</span>
                 <span className="text-3xl font-bold text-primary">${bookingDetails.totalPrice}</span>
             </div>
-             {/* This is a simulated form */}
-            <div className="grid gap-2">
-                <p className="text-sm text-center text-muted-foreground">This is a simulated payment gateway.</p>
-            </div>
         </CardContent>
-        <CardFooter>
-          <Button className="w-full" onClick={handlePayment} disabled={processing}>
+        <CardFooter className="flex-col gap-4">
             {processing ? (
-                <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Processing...
-                </>
+                 <div className="flex items-center justify-center p-4">
+                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    <p className="ml-2 text-muted-foreground">Processing your booking...</p>
+                </div>
+            ) : PAYPAL_CLIENT_ID === "YOUR_PAYPAL_CLIENT_ID" ? (
+                 <div className="text-center text-sm text-yellow-500">
+                    Please configure your PayPal Client ID in <code>src/app/payment/page.tsx</code> to enable payments.
+                 </div>
             ) : (
-                <>
-                    <CreditCard className="mr-2 h-4 w-4" />
-                    Pay Now
-                </>
+                <PayPalScriptProvider options={{ "clientId": PAYPAL_CLIENT_ID, currency: "USD" }}>
+                    <PayPalButtons
+                        style={{ layout: "vertical" }}
+                        createOrder={(data, actions) => {
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                        value: bookingDetails.totalPrice.toString(),
+                                    },
+                                    description: `Parking Slot Booking: ${bookingDetails.slotId} for ${bookingDetails.durationHours}h`,
+                                }]
+                            })
+                        }}
+                        onApprove={(data, actions) => {
+                            // This function is called when the payment is successful.
+                            // The `actions.order.capture()` function captures the transaction.
+                            return actions.order!.capture().then(async (details) => {
+                                console.log("Payment successful:", details);
+                                toast({ title: "PayPal Payment Approved", description: `Transaction ID: ${details.id}`});
+                                await handleSuccessfulPayment();
+                            });
+                        }}
+                        onError={(err) => {
+                            console.error("PayPal Error:", err);
+                            toast({ variant: "destructive", title: "PayPal Error", description: "Something went wrong with the payment." });
+                        }}
+                        onCancel={() => {
+                            toast({ variant: "destructive", title: "Payment Cancelled", description: "You have cancelled the payment." });
+                        }}
+                    />
+                </PayPalScriptProvider>
             )}
-          </Button>
         </CardFooter>
       </Card>
     </div>
