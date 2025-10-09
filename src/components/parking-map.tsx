@@ -17,11 +17,15 @@ interface ParkingMapProps {
 }
 
 export default function ParkingMap({ slots }: ParkingMapProps) {
-  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
+  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
     return (
-      <div className="flex items-center justify-center p-4 text-center bg-red-100 border border-red-400 text-red-700 rounded-lg">
+      <div className="flex items-center justify-center p-4 text-center bg-yellow-100/80 border border-yellow-400 text-yellow-800 rounded-lg">
         <p>
-          Google Maps API Key is missing. Please add it to your .env file to display the map.
+          <strong>Action Required:</strong> Your Google Maps API key is missing or invalid.
+          <br />
+          Please add your key to the <code>.env</code> file to display the map.
+          <br />
+          If the error persists, ensure the key is correctly configured in your Google Cloud Console.
         </p>
       </div>
     );
