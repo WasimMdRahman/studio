@@ -24,6 +24,8 @@ import { useToast } from "@/hooks/use-toast";
 import CurrentBooking from "@/components/current-booking";
 import BookingConfirmationDialog from "@/components/booking-confirmation-dialog";
 import type { BookingDetails } from "@/lib/slots";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -90,7 +92,16 @@ export default function DashboardPage() {
             toast({
                 variant: "destructive",
                 title: "Firestore Permission Denied",
-                description: "Your security rules are blocking access. For development, go to your Firebase console -> Firestore -> Rules and use: allow read, write: if true;",
+                description: "Your security rules are blocking access. For development, go to your Firebase console to fix this.",
+                action: (
+                  <Link
+                    href="https://console.firebase.google.com"
+                    target="_blank"
+                    className={buttonVariants({ variant: "outline" })}
+                  >
+                    Go to Console
+                  </Link>
+                ),
                 duration: 10000,
             });
         }
@@ -229,3 +240,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
