@@ -26,6 +26,7 @@ import BookingConfirmationDialog from "@/components/booking-confirmation-dialog"
 import type { BookingDetails } from "@/lib/slots";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import ParkingMap from "@/components/parking-map";
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -220,6 +221,7 @@ export default function DashboardPage() {
         <div className="container mx-auto">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
+              <ParkingMap slots={slots} />
               <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={user?.uid} />
             </div>
             <div className="flex flex-col gap-8">
@@ -240,5 +242,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
