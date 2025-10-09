@@ -95,7 +95,7 @@ export default function DashboardPage() {
                 description: "Your security rules are blocking access. For development, go to your Firebase console to fix this.",
                 action: (
                   <Link
-                    href="https://console.firebase.google.com"
+                    href="https://console.firebase.google.com/project/parkwise-i92rx/"
                     target="_blank"
                     className={buttonVariants({ variant: "outline" })}
                   >
