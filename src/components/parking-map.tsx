@@ -52,10 +52,10 @@ export default function ParkingMap({ slots }: ParkingMapProps) {
               <AdvancedMarker
                 key={zone}
                 position={zonePositions[zone as keyof typeof zonePositions]}
-                title={`Zone ${zone}`}
+                title={`Zone ${zone}: ${available} of ${total} slots available`}
               >
                 <div
-                  className={`flex flex-col items-center justify-center rounded-full border-2 w-16 h-16 shadow-lg
+                  className={`flex flex-col items-center justify-center rounded-full border-2 w-20 h-20 shadow-lg transition-all
                     ${
                       isAvailable
                         ? "bg-green-500/80 border-green-300 text-white"
@@ -63,7 +63,8 @@ export default function ParkingMap({ slots }: ParkingMapProps) {
                     }`}
                 >
                   <span className="text-lg font-bold">Zone {zone}</span>
-                  <span className="text-xs font-semibold">{available}/{total}</span>
+                  <span className="text-sm font-semibold">{available} / {total}</span>
+                  <span className="text-xs">available</span>
                 </div>
               </AdvancedMarker>
             );
