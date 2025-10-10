@@ -1,31 +1,12 @@
 
 "use client";
 
-import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Car, Loader2, Map, ParkingSquare, Wallet, Zap } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user && !loading) {
-      router.push("/dashboard");
-    }
-  }, [user, loading, router]);
-
-  if (loading || (user && !loading)) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background overflow-x-hidden">
@@ -35,11 +16,8 @@ export default function Home() {
           ParkWise
         </h1>
         <div className="flex items-center gap-2 sm:gap-4">
-          <Button variant="ghost" asChild>
-            <Link href="/login">Log In</Link>
-          </Button>
           <Button asChild>
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/dashboard">Get Started</Link>
           </Button>
         </div>
       </header>
@@ -53,7 +31,7 @@ export default function Home() {
           </p>
           <div className="mt-8 flex gap-4 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
             <Button size="lg" asChild>
-              <Link href="/signup">Get Started</Link>
+              <Link href="/dashboard">Get Started</Link>
             </Button>
           </div>
         </section>

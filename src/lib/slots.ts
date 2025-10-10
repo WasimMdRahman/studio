@@ -16,6 +16,7 @@ export interface BookingDetails {
     totalPrice: number;
     name: string;
     carNumber: string;
+    email: string;
 }
 
 export const PARKING_ZONES = ['A', 'B', 'C', 'D'];

@@ -33,14 +33,16 @@ export default function BookingConfirmationDialog({
   const [duration, setDuration] = useState(1); // Default to 1 hour
   const [name, setName] = useState("");
   const [carNumber, setCarNumber] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     if (isOpen) {
       const storedDetails = localStorage.getItem('userDetails');
       if (storedDetails) {
-        const { name, carNumber } = JSON.parse(storedDetails);
-        setName(name);
-        setCarNumber(carNumber);
+        const { name, carNumber, email } = JSON.parse(storedDetails);
+        setName(name || "");
+        setCarNumber(carNumber || "");
+        setEmail(email || "");
       }
     }
   }, [isOpen]);
@@ -54,12 +56,16 @@ export default function BookingConfirmationDialog({
   const totalPrice = calculatePrice(duration);
 
   const handleConfirm = () => {
+    const userDetails = { name, carNumber, email };
+    localStorage.setItem('userDetails', JSON.stringify(userDetails));
+    
     onConfirm({
       slotId: slot.id,
       durationHours: duration,
       totalPrice: totalPrice,
       name: name,
       carNumber: carNumber,
+      email: email,
     });
   };
 
@@ -76,6 +82,10 @@ export default function BookingConfirmationDialog({
             <div className="grid gap-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input id="name" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+             <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="john.doe@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
              <div className="grid gap-2">
                 <Label htmlFor="carNumber">Car Number</Label>
@@ -106,7 +116,7 @@ export default function BookingConfirmationDialog({
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm} disabled={!name || !carNumber}>Proceed to Payment</AlertDialogAction>
+          <AlertDialogAction onClick={handleConfirm} disabled={!name || !carNumber || !email}>Proceed to Payment</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

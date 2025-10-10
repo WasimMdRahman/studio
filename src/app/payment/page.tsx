@@ -1,7 +1,6 @@
 
 "use client";
 
-import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -14,26 +13,30 @@ import type { BookingDetails } from "@/lib/slots";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function PaymentPage() {
-  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(null);
   const [processing, setProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [guestId, setGuestId] = useState<string | null>(null);
   
   // IMPORTANT: Replace "YOUR_PAYPAL_CLIENT_ID" with your actual client ID from your PayPal Developer Dashboard.
   const PAYPAL_CLIENT_ID = "YOUR_PAYPAL_CLIENT_ID";
 
   useEffect(() => {
     const details = localStorage.getItem('pendingBooking');
-    if (details) {
+    const id = localStorage.getItem('guestId');
+    
+    if (details && id) {
       setBookingDetails(JSON.parse(details));
+      setGuestId(id);
     } else {
       router.push('/dashboard');
     }
   }, [router]);
 
-  const sendBookingEmail = async (slotId: string, userEmail: string, expiresAt: number) => {
+  const sendBookingEmail = async (slotId: string, userEmail: string | null, expiresAt: number) => {
+    if (!userEmail) return;
     try {
       await fetch('/api/send-email', {
         method: 'POST',
@@ -55,7 +58,7 @@ export default function PaymentPage() {
   };
 
   const handleSuccessfulPayment = async () => {
-    if (!user || !bookingDetails) return;
+    if (!guestId || !bookingDetails) return;
     setProcessing(true);
 
     try {
@@ -72,8 +75,8 @@ export default function PaymentPage() {
             
             transaction.update(slotRef, {
                 status: "booked",
-                bookedBy: user.uid,
-                userEmail: user.email,
+                bookedBy: guestId,
+                userEmail: bookingDetails.email, // Use email from booking details
                 userName: bookingDetails.name,
                 carNumber: bookingDetails.carNumber,
                 bookedAt: now,
@@ -85,10 +88,10 @@ export default function PaymentPage() {
         setProcessing(false);
         localStorage.removeItem('pendingBooking');
         toast({ title: "Payment Successful!", description: `Slot ${bookingDetails.slotId} booked for ${bookingDetails.durationHours} hours.` });
-        if (user.email) {
-          const expiresAt = Date.now() + bookingDetails.durationHours * 60 * 60 * 1000;
-          sendBookingEmail(bookingDetails.slotId, user.email, expiresAt);
-        }
+
+        const expiresAt = Date.now() + bookingDetails.durationHours * 60 * 60 * 1000;
+        sendBookingEmail(bookingDetails.slotId, bookingDetails.email, expiresAt);
+
 
     } catch (error: any) {
         console.error("Booking update failed: ", error);
@@ -98,7 +101,7 @@ export default function PaymentPage() {
     }
   };
 
-  if (authLoading || !bookingDetails) {
+  if (!bookingDetails) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -119,6 +122,7 @@ export default function PaymentPage() {
                       <p>You have successfully booked slot <strong className="text-primary">{bookingDetails.slotId}</strong> for <strong className="text-primary">{bookingDetails.durationHours} {bookingDetails.durationHours > 1 ? "hours" : "hour"}</strong>.</p>
                       <div className="text-left mt-4 text-sm text-muted-foreground space-y-2">
                         <p><strong>Name:</strong> {bookingDetails.name}</p>
+                        <p><strong>Email:</strong> {bookingDetails.email}</p>
                         <p><strong>Car Number:</strong> {bookingDetails.carNumber}</p>
                       </div>
                   </CardContent>
@@ -142,6 +146,7 @@ export default function PaymentPage() {
         <CardContent className="space-y-4">
             <div className="text-sm text-muted-foreground space-y-1">
                 <p><strong>Name:</strong> {bookingDetails.name}</p>
+                <p><strong>Email:</strong> {bookingDetails.email}</p>
                 <p><strong>Car Number:</strong> {bookingDetails.carNumber}</p>
             </div>
             <div className="flex items-center justify-center rounded-lg border bg-background/50 p-6">

@@ -4,7 +4,6 @@
 import Header from "@/components/header";
 import ParkingGrid from "@/components/parking-grid";
 import ParkingStats from "@/components/parking-stats";
-import { useAuth } from "@/components/auth-provider";
 import { db } from "@/lib/firebase";
 import {
   collection,
@@ -29,7 +28,6 @@ import { buttonVariants } from "@/components/ui/button";
 import ParkingMap from "@/components/parking-map";
 
 export default function DashboardPage() {
-  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -37,6 +35,16 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [selectedSlot, setSelectedSlot] = useState<ParkingSlot | null>(null);
   const [isConfirmOpen, setConfirmOpen] = useState(false);
+  const [guestId, setGuestId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let id = localStorage.getItem("guestId");
+    if (!id) {
+      id = `guest_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      localStorage.setItem("guestId", id);
+    }
+    setGuestId(id);
+  }, []);
 
   const initializeSlots = useCallback(async () => {
     console.log("Checking if slots need initialization...");
@@ -65,14 +73,6 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    if (!user && !authLoading) {
-      router.push("/login");
-    }
-  }, [user, authLoading, router]);
-  
-  useEffect(() => {
-    if (!user) return;
-
     const q = query(collection(db, "slots"));
     const unsubscribe = onSnapshot(q, async (querySnapshot) => {
       if (querySnapshot.empty) {
@@ -93,14 +93,14 @@ export default function DashboardPage() {
             toast({
                 variant: "destructive",
                 title: "Firestore Permission Denied",
-                description: "Your security rules are blocking access. For development, go to your Firebase console to fix this.",
+                description: "This app requires open access to Firestore. For development, please update your security rules to allow read/write access.",
                 action: (
                   <Link
-                    href="https://console.firebase.google.com/project/parkwise-i92rx/"
+                    href="https://console.firebase.google.com/project/parkwise-i92rx/firestore/rules"
                     target="_blank"
                     className={buttonVariants({ variant: "outline" })}
                   >
-                    Go to Console
+                    Go to Rules
                   </Link>
                 ),
                 duration: 10000,
@@ -110,7 +110,7 @@ export default function DashboardPage() {
     });
 
     return () => unsubscribe();
-  }, [user, initializeSlots, toast]);
+  }, [initializeSlots, toast]);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -146,14 +146,14 @@ export default function DashboardPage() {
   }, []);
 
   const handleCancelBooking = async (slotId: string) => {
-     if (!user) return;
+     if (!guestId) return;
     try {
       await runTransaction(db, async (transaction) => {
         const slotRef = doc(db, "slots", slotId);
         const slotDoc = await transaction.get(slotRef);
 
-        if (!slotDoc.exists() || slotDoc.data().bookedBy !== user.uid) {
-            throw new Error("Cannot cancel this booking.");
+        if (!slotDoc.exists() || slotDoc.data().bookedBy !== guestId) {
+            throw new Error("This booking does not belong to you.");
         }
         transaction.update(slotRef, {
             status: "available",
@@ -173,14 +173,14 @@ export default function DashboardPage() {
   }
 
   const handleSlotClick = async (slotId: string) => {
-    if (!user) return;
+    if (!guestId) return;
     const slot = slots.find(s => s.id === slotId);
     if(!slot) return;
 
-    if (slot.status === 'booked' && slot.bookedBy === user.uid) {
+    if (slot.status === 'booked' && slot.bookedBy === guestId) {
       handleCancelBooking(slotId);
     } else if (slot.status === 'available') {
-      const userHasBooking = slots.find(s => s.bookedBy === user.uid);
+      const userHasBooking = slots.find(s => s.bookedBy === guestId);
       if (userHasBooking) {
         toast({
           variant: "destructive",
@@ -196,17 +196,16 @@ export default function DashboardPage() {
 
   const handleBookingConfirm = (details: BookingDetails) => {
     setConfirmOpen(false);
-    if (!user) {
-        // This case should ideally not happen if they are on the dashboard,
-        // but as a fallback, we redirect to login.
-        router.push('/login');
+    if (!guestId) {
+        toast({ variant: "destructive", title: "Action Failed", description: "Could not identify user." });
+        return;
     } else {
         localStorage.setItem('pendingBooking', JSON.stringify(details));
         router.push('/payment');
     }
   }
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -222,10 +221,10 @@ export default function DashboardPage() {
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <ParkingMap slots={slots} />
-              <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={user?.uid} />
+              <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={guestId ?? undefined} />
             </div>
             <div className="flex flex-col gap-8">
-              <CurrentBooking slots={slots} currentUserId={user?.uid} />
+              <CurrentBooking slots={slots} currentUserId={guestId ?? undefined} />
               <ParkingStats slots={slots} />
             </div>
           </div>
