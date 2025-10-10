@@ -14,9 +14,10 @@ const zonePositions = {
 
 interface ParkingMapProps {
   slots: ParkingSlot[];
+  onZoneClick?: (zone: string) => void;
 }
 
-export default function ParkingMap({ slots }: ParkingMapProps) {
+export default function ParkingMap({ slots, onZoneClick }: ParkingMapProps) {
   if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
     return (
       <div className="flex items-center justify-center p-4 text-center bg-yellow-100/80 border border-yellow-400 text-yellow-800 rounded-lg">
@@ -53,9 +54,10 @@ export default function ParkingMap({ slots }: ParkingMapProps) {
                 key={zone}
                 position={zonePositions[zone as keyof typeof zonePositions]}
                 title={`Zone ${zone}: ${available} of ${total} slots available`}
+                onClick={() => onZoneClick?.(zone)}
               >
                 <div
-                  className={`flex flex-col items-center justify-center rounded-full border-2 w-20 h-20 shadow-lg transition-all
+                  className={`flex flex-col items-center justify-center rounded-full border-2 w-20 h-20 shadow-lg transition-all cursor-pointer
                     ${
                       isAvailable
                         ? "bg-green-500/80 border-green-300 text-white"
