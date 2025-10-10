@@ -1,40 +1,41 @@
-// IMPORTANT: This is a placeholder for your email sending logic.
-// You'll need to install an email client library (e.g., @sendgrid/mail, nodemailer)
-// and configure it with your API keys.
-
-import {NextResponse} from 'next/server';
+import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
-  const {to, subject, html} = await request.json();
+  const { to, subject, html } = await request.json();
 
-  console.log('--- Sending Email ---');
-  console.log('To:', to);
-  console.log('Subject:', subject);
-  console.log('Body:', html);
-  console.log('---------------------');
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_SERVER_USER,
+      pass: process.env.EMAIL_SERVER_PASSWORD,
+    },
+  });
 
-  // Replace this with your actual email sending logic
+  const mailOptions = {
+    from: `"ParkWise" <${process.env.EMAIL_FROM}>`,
+    to: to,
+    subject: subject,
+    html: html,
+  };
+
   try {
-    // EXAMPLE using SendGrid (you would need to `npm install @sendgrid/mail`)
-    /*
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-      to: to,
-      from: 'support@parkwise.com', // Use a verified sender
-      subject: subject,
-      html: html,
-    };
-    await sgMail.send(msg);
-    */
-
-    // For now, we'll just simulate a successful response.
-    return NextResponse.json({message: 'Email sent successfully (simulated).'});
-  } catch (error) {
+    // Check for missing credentials first
+    if (!process.env.EMAIL_SERVER_USER || !process.env.EMAIL_SERVER_PASSWORD || process.env.EMAIL_SERVER_USER === 'YOUR_GMAIL_ADDRESS@gmail.com') {
+      console.error('Email credentials are not configured in .env file.');
+      return NextResponse.json(
+        { message: 'Email service is not configured on the server. Email not sent.' },
+        { status: 500 }
+      );
+    }
+    
+    await transporter.sendMail(mailOptions);
+    return NextResponse.json({ message: 'Email sent successfully!' });
+  } catch (error: any) {
     console.error('Email sending failed:', error);
     return NextResponse.json(
-      {message: 'Failed to send email.'},
-      {status: 500}
+      { message: `Failed to send email: ${error.message}` },
+      { status: 500 }
     );
   }
 }
