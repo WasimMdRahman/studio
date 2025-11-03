@@ -18,11 +18,11 @@ interface ParkingMapProps {
 }
 
 export default function ParkingMap({ slots, onZoneClick }: ParkingMapProps) {
-  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
+  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
     return (
       <div className="flex items-center justify-center p-4 text-center bg-yellow-100/80 border border-yellow-400 text-yellow-800 rounded-lg">
         <p>
-          <strong>Action Required:</strong> Your Google Maps API key is missing or invalid.
+          <strong>Action Required:</strong> Your Google Maps API key is missing.
           <br />
           Please add your key to the <code>.env</code> file to display the map.
           <br />
