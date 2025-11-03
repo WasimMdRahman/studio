@@ -26,7 +26,6 @@ import type { BookingDetails } from "@/lib/slots";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import ParkingMap from "@/components/parking-map";
-import ParkingTips from "@/components/parking-tips";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -234,7 +233,6 @@ export default function DashboardPage() {
             <div className="flex flex-col gap-8">
               <CurrentBooking slots={slots} currentUserId={guestId ?? undefined} />
               <ParkingStats slots={slots} />
-              <ParkingTips slots={slots} />
             </div>
           </div>
         </div>
