@@ -20,14 +20,19 @@ interface ParkingMapProps {
 export default function ParkingMap({ slots, onZoneClick }: ParkingMapProps) {
   if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
     return (
-      <div className="flex items-center justify-center p-4 text-center bg-yellow-100/80 border border-yellow-400 text-yellow-800 rounded-lg">
-        <p>
-          <strong>Action Required:</strong> Your Google Maps API key is missing.
-          <br />
-          Please add your key to the <code>.env</code> file to display the map.
-          <br />
-          If the error persists, ensure the key is correctly configured in your Google Cloud Console.
-        </p>
+      <div className="flex flex-col items-center justify-center p-4 text-center bg-yellow-100/80 border border-yellow-400 text-yellow-800 rounded-lg space-y-4">
+        <div>
+          <p className="font-bold">Action Required: Your Google Maps API key is missing or invalid.</p>
+          <p>Please add your key to the <code>.env</code> file to display the map.</p>
+        </div>
+        <div>
+          <p className="font-bold">If the error persists, please check the following in your Google Cloud Console:</p>
+          <ul className="text-left list-disc list-inside mt-2">
+            <li><a href="https://console.cloud.google.com/apis/library/maps-javascript-backend.googleapis.com?project=parkwise-i92rx" target="_blank" rel="noopener noreferrer" className="underline font-medium">Ensure the Maps JavaScript API is enabled.</a></li>
+            <li><a href="https://console.cloud.google.com/billing?project=parkwise-i92rx" target="_blank" rel="noopener noreferrer" className="underline font-medium">Ensure a billing account is linked to the project.</a></li>
+            <li><a href="https://console.cloud.google.com/apis/credentials?project=parkwise-i92rx" target="_blank" rel="noopener noreferrer" className="underline font-medium">Check your API key restrictions (try removing them temporarily).</a></li>
+          </ul>
+        </div>
       </div>
     );
   }
