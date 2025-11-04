@@ -25,7 +25,6 @@ import BookingConfirmationDialog from "@/components/booking-confirmation-dialog"
 import type { BookingDetails } from "@/lib/slots";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import ParkingMap from "@/components/parking-map";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -205,13 +204,6 @@ export default function DashboardPage() {
     }
   }
 
-  const handleZoneClick = (zone: string) => {
-    const zoneElement = document.getElementById(`zone-${zone}`);
-    if (zoneElement) {
-      zoneElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -227,7 +219,6 @@ export default function DashboardPage() {
         <div className="container mx-auto">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <ParkingMap slots={slots} onZoneClick={handleZoneClick} />
               <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={guestId ?? undefined} />
             </div>
             <div className="flex flex-col gap-8">
