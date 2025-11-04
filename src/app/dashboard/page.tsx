@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import type { ParkingSlot } from "@/lib/slots";
 import { PARKING_ZONES, SLOTS_PER_ZONE, EXPIRATION_MINUTES } from "@/lib/slots";
 import { useToast } from "@/hooks/use-toast";
@@ -25,6 +25,7 @@ import BookingConfirmationDialog from "@/components/booking-confirmation-dialog"
 import type { BookingDetails } from "@/lib/slots";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import ParkingMap from "@/components/parking-map";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -35,6 +36,8 @@ export default function DashboardPage() {
   const [selectedSlot, setSelectedSlot] = useState<ParkingSlot | null>(null);
   const [isConfirmOpen, setConfirmOpen] = useState(false);
   const [guestId, setGuestId] = useState<string | null>(null);
+
+  const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let id = localStorage.getItem("guestId");
@@ -204,6 +207,13 @@ export default function DashboardPage() {
     }
   }
 
+  const handleZoneClick = (zone: string) => {
+    const element = document.getElementById(`zone-${zone}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -213,12 +223,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="flex min-h-screen w-full flex-col" ref={pageRef}>
       <Header />
       <main className="flex-1 bg-secondary/20 p-4 sm:p-6 md:p-8">
         <div className="container mx-auto">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
+              <ParkingMap slots={slots} onZoneClick={handleZoneClick} />
               <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={guestId ?? undefined} />
             </div>
             <div className="flex flex-col gap-8">
