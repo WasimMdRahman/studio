@@ -223,6 +223,17 @@ export default function DashboardPage() {
     );
   }
 
+  const renderMapOrMessage = () => {
+    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY") {
+      return (
+        <div className="mb-8 flex flex-col items-center justify-center p-4 text-center bg-yellow-900/20 border border-yellow-700 text-yellow-300 rounded-lg space-y-2">
+          <p className="font-bold">The map is hidden because the Google Maps API key is missing or invalid in your .env file.</p>
+        </div>
+      );
+    }
+    return <ParkingMap slots={slots} onZoneClick={handleZoneClick} />;
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col" ref={pageRef}>
       <Header />
@@ -230,7 +241,7 @@ export default function DashboardPage() {
         <div className="container mx-auto">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <ParkingMap slots={slots} onZoneClick={handleZoneClick} />
+              {renderMapOrMessage()}
               <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={guestId ?? undefined} />
             </div>
             <div className="flex flex-col gap-8">
