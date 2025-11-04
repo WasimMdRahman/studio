@@ -161,8 +161,10 @@ export default function PaymentPage() {
                     <p className="ml-2 text-muted-foreground">Processing your booking...</p>
                 </div>
             ) : PAYPAL_CLIENT_ID === "YOUR_PAYPAL_CLIENT_ID" ? (
-                 <div className="text-center text-sm text-yellow-500">
-                    Please configure your PayPal Client ID in <code>src/app/payment/page.tsx</code> to enable payments.
+                 <div className="text-center text-sm text-yellow-500 p-4 rounded-md bg-yellow-900/20 border border-yellow-700">
+                    <p className="font-bold">PayPal Sandbox is not configured.</p>
+                    <p>To enable payments, get a Client ID from the PayPal Developer Dashboard and add it to <code>src/app/payment/page.tsx</code>.</p>
+                    <Button variant="link" asChild><a href="https://developer.paypal.com/dashboard/applications/sandbox" target="_blank" rel="noopener noreferrer">Get PayPal Client ID</a></Button>
                  </div>
             ) : (
                 <PayPalScriptProvider options={{ "clientId": PAYPAL_CLIENT_ID, currency: "USD" }}>
