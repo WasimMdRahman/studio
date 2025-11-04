@@ -26,8 +26,10 @@ export default function Home() {
           <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-6xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
             The smartest way to park.
           </h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-            ParkWise offers real-time parking availability, seamless booking, and smart suggestions. Never circle the lot again.
+          <p className="mt-4 max-w-3xl text-lg text-muted-foreground animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+            Welcome to ParkWise, the definitive solution to one of modern urban life's most persistent challenges: finding a parking spot. In our bustling cities, the search for parking has become more than just a minor inconvenience; it's a significant source of stress, wasted time, and unnecessary fuel consumption, contributing to traffic congestion and environmental strain. We've all experienced the frustration of endlessly circling a packed parking lot, anxiously watching for a free spot, only to be beaten to it by seconds. This daily struggle not only frays our nerves but also impacts the overall efficiency and livability of our urban centers.
+            <br/><br/>
+            ParkWise was born from a simple yet powerful idea: parking should be effortless. We are dedicated to transforming the driver's experience by leveraging cutting-edge technology to eliminate guesswork and anxiety. Our intelligent platform connects you to a network of real-time sensors, providing an accurate, live view of parking availability. With just a few taps, you can locate an open slot, book it instantly, and navigate directly to it without hassle. By integrating seamless payment options and smart, AI-driven suggestions, we take the entire parking lifecycle—from finding to funding—and make it a smooth, integrated process. Join us in reclaiming your time and making our cities smarter, one parking spot at a time.
           </p>
           <div className="mt-8 flex gap-4 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
             <Button size="lg" asChild>
