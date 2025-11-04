@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Header from "@/components/header";
@@ -229,11 +230,7 @@ export default function DashboardPage() {
         <div className="container mx-auto">
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <div className="mb-8">
-                <p className="text-center p-4 bg-yellow-900/20 text-yellow-300 rounded-lg border border-yellow-700">
-                  The map is temporarily hidden due to a Google Cloud billing verification issue. Please complete the account verification to re-enable the map. The rest of the app is fully functional.
-                </p>
-              </div>
+              <ParkingMap slots={slots} onZoneClick={handleZoneClick} />
               <ParkingGrid slots={slots} onSlotClick={handleSlotClick} currentUserId={guestId ?? undefined} />
             </div>
             <div className="flex flex-col gap-8">
